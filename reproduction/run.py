@@ -74,6 +74,8 @@ def main() -> int:
 
     verifier = run_script(CLAIM_DIR / "verify_claim.py")
     checker = run_script(CLAIM_DIR / "independent_checker.py")
+    (GENERATED / "verifier_console.txt").write_text(verifier.stdout, encoding="utf-8")
+    (GENERATED / "checker_console.txt").write_text(checker.stdout, encoding="utf-8")
     elapsed = time.monotonic() - start
     affinity = sorted(os.sched_getaffinity(0)) if hasattr(os, "sched_getaffinity") else None
     environment = {
@@ -96,7 +98,11 @@ def main() -> int:
     }
     (GENERATED / "environment.json").write_text(json.dumps(environment, indent=2), encoding="utf-8")
 
-    verifier_json = json.loads((GENERATED / "verifier_output.json").read_text(encoding="utf-8"))
+    verifier_output = GENERATED / "verifier_output.json"
+    if verifier_output.exists():
+        verifier_json = json.loads(verifier_output.read_text(encoding="utf-8"))
+    else:
+        verifier_json = {"status": "BLOCKED", "failures": ["verifier produced no JSON output"]}
     large_rows = [row for row in result["rows"] if row["n"] == 5000]
     eval_text = "# EVAL\n\nVerdict: **{}**\n\n".format(verifier_json["status"])
     for row in large_rows:
@@ -111,8 +117,6 @@ def main() -> int:
         f"- HF cpu-upgrade runtime: {elapsed:.3f} seconds; actual affinity: {environment['affinity_cpu_count']} CPUs.\n"
     )
     (GENERATED / "EVAL.md").write_text(eval_text, encoding="utf-8")
-    (GENERATED / "verifier_console.txt").write_text(verifier.stdout, encoding="utf-8")
-    (GENERATED / "checker_console.txt").write_text(checker.stdout, encoding="utf-8")
     write_manifest()
 
     passed = verifier.returncode == 0 and checker.returncode == 0
