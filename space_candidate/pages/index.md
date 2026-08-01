@@ -4,6 +4,7 @@
 
 | Page |
 | --- |
+| [Current verification — Claim 2 VERIFIED at paper setting](#/current-claim-2) |
 | [Current verification — Claim 1 VERIFIED](#/current-claim-1) |
 | [Historical rejected baseline — Overview](#/overview) |
 | [Historical rejected baseline — Claims](#/claims) |

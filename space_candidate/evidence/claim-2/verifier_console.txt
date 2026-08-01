@@ -1,0 +1,54 @@
+{
+  "status": "VERIFIED",
+  "passed": true,
+  "failures": [],
+  "largest_b": {
+    "replicates": "10000",
+    "standardized_mean": "0.07203915650906849",
+    "variance_ratio": "0.9923198425851171",
+    "ks_distance": "0.03492761930435945",
+    "gaussian_95_coverage": "0.9477",
+    "coverage_wilson_low": "0.9431620418982289",
+    "coverage_wilson_high": "0.9518941259606672",
+    "skewness": "0.023722000790273923",
+    "excess_kurtosis": "0.049323163157050764",
+    "boundary": "growing",
+    "b": "10000.0",
+    "alpha_label": "exp(-10000)",
+    "mean_tau": "26211.0749",
+    "mean_tau_over_b": "2.62110749",
+    "inverse_klinf": "2.6184282293850227",
+    "centering_relative_error": "0.0010232324051923764",
+    "variance_ratio_ci_low": "0.9653776742255226",
+    "variance_ratio_ci_high": "1.0204112849012925",
+    "mean_overshoot": "0.5000138465158943",
+    "q99_tau": "27076.0"
+  },
+  "trends": {
+    "ks_improves": true,
+    "centering_improves": true,
+    "variance_improves": true
+  },
+  "controls": {
+    "finite_b_large_scale_gate": {
+      "expected": "FAIL",
+      "observed": "FAIL",
+      "failed_checks": [
+        "variance_ci",
+        "ks_distance",
+        "standardized_mean",
+        "centering_relative_error",
+        "skewness",
+        "excess_kurtosis",
+        "coverage"
+      ],
+      "valid": true
+    },
+    "wrong_fixed_sample_variance": {
+      "expected": "FAIL",
+      "observed_variance_ratio": 17.81450252581717,
+      "observed": "FAIL",
+      "valid": true
+    }
+  }
+}

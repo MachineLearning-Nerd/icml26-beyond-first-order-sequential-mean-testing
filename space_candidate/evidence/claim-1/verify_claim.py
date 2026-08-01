@@ -13,9 +13,11 @@ from statistics import NormalDist
 
 
 HERE = Path(__file__).resolve().parent
-ROOT = Path(__file__).resolve().parents[3]
-GENERATED = ROOT / ".openresearch" / "artifacts" / "claim_1" / "generated"
-CANDIDATE = ROOT / "space_candidate"
+CANDIDATE = HERE.parents[1]
+GENERATED_CANDIDATES = [
+    CANDIDATE.parent / ".openresearch" / "artifacts" / "claim_1" / "generated",
+    CANDIDATE / ".generated" / "claim-1",
+]
 
 
 def ks_distance(values: list[float]) -> float:
@@ -71,20 +73,27 @@ def main() -> int:
     if control["observed"] != "FAIL" or not control["valid"]:
         failures.append("negative control did not fail as intended")
 
-    if GENERATED.exists():
-        committed_metrics = (HERE / "fixed_clt_metrics.csv").read_text(encoding="utf-8").splitlines()
-        regenerated_metrics = (GENERATED / "fixed_clt_metrics.csv").read_text(encoding="utf-8").splitlines()
-        if committed_metrics != regenerated_metrics:
-            failures.append("committed metrics differ from regenerated metrics")
-        regenerated_raw = gzip.decompress((GENERATED / "fixed_clt_replicates.csv.gz").read_bytes())
-        if (HERE / "fixed_clt_replicates.csv").read_bytes() != regenerated_raw:
-            failures.append("committed raw replicates differ from regenerated replicates")
+    for generated in GENERATED_CANDIDATES:
+        if generated.exists():
+            committed_metrics = (HERE / "fixed_clt_metrics.csv").read_text(encoding="utf-8").splitlines()
+            regenerated_metrics = (generated / "fixed_clt_metrics.csv").read_text(encoding="utf-8").splitlines()
+            if committed_metrics != regenerated_metrics:
+                failures.append(f"committed metrics differ from regenerated metrics at {generated}")
+            regenerated_raw = gzip.decompress((generated / "fixed_clt_replicates.csv.gz").read_bytes())
+            if (HERE / "fixed_clt_replicates.csv").read_bytes() != regenerated_raw:
+                failures.append(f"committed raw replicates differ from regenerated replicates at {generated}")
 
     logbook = json.loads((CANDIDATE / "logbook.json").read_text(encoding="utf-8"))
-    first_page = logbook["root"]["children"][0]
-    if first_page["slug"] != "current-claim-1":
-        failures.append("current Claim 1 page is not first in navigation")
-    page = (CANDIDATE / first_page["file"]).read_text(encoding="utf-8")
+    children = logbook["root"]["children"]
+    current_page = next((child for child in children if child["slug"] == "current-claim-1"), None)
+    if current_page is None:
+        failures.append("current Claim 1 page is absent from navigation")
+        current_page = {"file": "pages/current-claim-1/page.md"}
+    historical_index = min(index for index, child in enumerate(children) if child["slug"] == "overview")
+    claim_index = next((index for index, child in enumerate(children) if child["slug"] == "current-claim-1"), len(children))
+    if claim_index >= historical_index:
+        failures.append("current Claim 1 page appears after historical pages")
+    page = (CANDIDATE / current_page["file"]).read_text(encoding="utf-8")
     required_text = [
         "# Claim 1 — VERIFIED",
         "Exact claim contract",
@@ -133,7 +142,7 @@ def main() -> int:
         "failures": failures,
         "raw_rows_checked": sum(len(values) for values in groups.values()),
         "negative_control": control["observed"],
-        "canonical_page": first_page["file"],
+        "canonical_page": current_page["file"],
         "protected_files_checked": len(manifest.read_text(encoding="utf-8").splitlines()),
     }
     print(json.dumps(result, indent=2))

@@ -103,13 +103,13 @@ def main() -> int:
     result_1 = run_claim_1(config["claim_1"], generated_1)
     verifier_1 = run_script(CLAIM_1 / "verify_claim.py")
     checker_1 = run_script(CLAIM_1 / "independent_checker.py")
-    candidate_path = ROOT / "space_candidate" / "evidence" / "claim-1" / "verify_claim.py"
-    candidate = run_script(candidate_path) if candidate_path.exists() else None
+    candidate_path_1 = ROOT / "space_candidate" / "evidence" / "claim-1" / "verify_claim.py"
+    candidate_1 = run_script(candidate_path_1) if candidate_path_1.exists() else None
     claim_1_runtime = time.monotonic() - claim_1_start
     (generated_1 / "verifier_console.txt").write_text(verifier_1.stdout, encoding="utf-8")
     (generated_1 / "checker_console.txt").write_text(checker_1.stdout, encoding="utf-8")
-    if candidate is not None:
-        (generated_1 / "candidate_verifier_console.txt").write_text(candidate.stdout, encoding="utf-8")
+    if candidate_1 is not None:
+        (generated_1 / "candidate_verifier_console.txt").write_text(candidate_1.stdout, encoding="utf-8")
     env_1 = environment(
         config,
         claim_1_runtime,
@@ -128,7 +128,7 @@ def main() -> int:
     eval_1 += (
         f"- Negative control: {result_1['negative_control']['observed']} as expected.\n"
         f"- Verifier/checker/candidate exits: {verifier_1.returncode}/{checker_1.returncode}/"
-        f"{candidate.returncode if candidate is not None else 'NA'}.\n"
+        f"{candidate_1.returncode if candidate_1 is not None else 'NA'}.\n"
         f"- HF cpu-upgrade runtime: {claim_1_runtime:.3f}s; actual affinity: {env_1['affinity_cpu_count']} CPUs.\n"
     )
     (generated_1 / "EVAL.md").write_text(eval_1, encoding="utf-8")
@@ -137,9 +137,13 @@ def main() -> int:
     result_2 = run_claim_2(config["claim_2"], generated_2)
     verifier_2 = run_script(CLAIM_2 / "verify_claim.py")
     checker_2 = run_script(CLAIM_2 / "independent_checker.py")
+    candidate_path_2 = ROOT / "space_candidate" / "evidence" / "claim-2" / "verify_claim.py"
+    candidate_2 = run_script(candidate_path_2) if candidate_path_2.exists() else None
     claim_2_runtime = time.monotonic() - claim_2_start
     (generated_2 / "verifier_console.txt").write_text(verifier_2.stdout, encoding="utf-8")
     (generated_2 / "checker_console.txt").write_text(checker_2.stdout, encoding="utf-8")
+    if candidate_2 is not None:
+        (generated_2 / "candidate_verifier_console.txt").write_text(candidate_2.stdout, encoding="utf-8")
     env_2 = environment(
         config,
         claim_2_runtime,
@@ -157,28 +161,31 @@ def main() -> int:
         f"standardized mean {float(largest_2['standardized_mean']):.4f}, relative centering error "
         f"{float(largest_2['centering_relative_error']):.5f}.\n"
         f"- Both negative controls: {[value['observed'] for value in result_2['controls'].values()]}.\n"
-        f"- Verifier/checker exits: {verifier_2.returncode}/{checker_2.returncode}.\n"
+        f"- Verifier/checker/candidate exits: {verifier_2.returncode}/{checker_2.returncode}/"
+        f"{candidate_2.returncode if candidate_2 is not None else 'NA'}.\n"
         f"- HF cpu-upgrade runtime: {claim_2_runtime:.3f}s; actual affinity: {env_2['affinity_cpu_count']} CPUs.\n"
     )
     (generated_2 / "EVAL.md").write_text(eval_2, encoding="utf-8")
     write_manifest(CLAIM_1)
     write_manifest(CLAIM_2)
 
-    candidate_exit = candidate.returncode if candidate is not None else None
-    passed_1 = verifier_1.returncode == 0 and checker_1.returncode == 0 and candidate_exit in {None, 0}
-    passed_2 = verifier_2.returncode == 0 and checker_2.returncode == 0
+    candidate_exit_1 = candidate_1.returncode if candidate_1 is not None else None
+    candidate_exit_2 = candidate_2.returncode if candidate_2 is not None else None
+    passed_1 = verifier_1.returncode == 0 and checker_1.returncode == 0 and candidate_exit_1 in {None, 0}
+    passed_2 = verifier_2.returncode == 0 and checker_2.returncode == 0 and candidate_exit_2 in {None, 0}
     summary = {
         "claim_1": {
             "status": verifier_json_1["status"] if passed_1 else "BLOCKED",
             "verifier_exit": verifier_1.returncode,
             "checker_exit": checker_1.returncode,
-            "candidate_verifier_exit": candidate_exit,
+            "candidate_verifier_exit": candidate_exit_1,
             "large_n_metrics": large_rows_1,
         },
         "claim_2": {
             "status": verifier_json_2["status"] if passed_2 else "BLOCKED",
             "verifier_exit": verifier_2.returncode,
             "checker_exit": checker_2.returncode,
+            "candidate_verifier_exit": candidate_exit_2,
             "largest_b": largest_2,
             "trends": verifier_json_2["trends"],
             "controls": result_2["controls"],
@@ -191,11 +198,13 @@ def main() -> int:
     if not passed_1:
         print(verifier_1.stdout)
         print(checker_1.stdout)
-        if candidate is not None:
-            print(candidate.stdout)
+        if candidate_1 is not None:
+            print(candidate_1.stdout)
     if not passed_2:
         print(verifier_2.stdout)
         print(checker_2.stdout)
+        if candidate_2 is not None:
+            print(candidate_2.stdout)
 
     bundle = make_bundle()
     payload = base64.b64encode(bundle.read_bytes()).decode("ascii")

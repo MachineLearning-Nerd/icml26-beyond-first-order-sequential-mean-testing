@@ -1,0 +1,22 @@
+{
+  "finite_b_large_scale_gate": {
+    "expected": "FAIL",
+    "observed": "FAIL",
+    "failed_checks": [
+      "variance_ci",
+      "ks_distance",
+      "standardized_mean",
+      "centering_relative_error",
+      "skewness",
+      "excess_kurtosis",
+      "coverage"
+    ],
+    "valid": true
+  },
+  "wrong_fixed_sample_variance": {
+    "expected": "FAIL",
+    "observed_variance_ratio": 17.81450252581717,
+    "observed": "FAIL",
+    "valid": true
+  }
+}

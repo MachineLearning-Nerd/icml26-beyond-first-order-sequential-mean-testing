@@ -1,0 +1,15 @@
+{
+  "format": "CSV with repeated header",
+  "rows_per_part": 20000,
+  "total_data_rows": 160000,
+  "parts": [
+    {"path": "stopping_paths-part-00.csv", "sha256": "0c1231258841cc194181bafdacb1b111ae2f50ecd3f1a2176132bd5a094f2092"},
+    {"path": "stopping_paths-part-01.csv", "sha256": "badaeef80d6cd201210e40a4a99b05aaa78078ff62e070b81418fa98b9212276"},
+    {"path": "stopping_paths-part-02.csv", "sha256": "cf0e1575cda1927cb8027e093b1564191972d00edac194aef0344fd0c31adb6a"},
+    {"path": "stopping_paths-part-03.csv", "sha256": "7d48294a95aa06d3698bebd6c4c490bd0c746d105f7ebc11bac5a3bba2d22da8"},
+    {"path": "stopping_paths-part-04.csv", "sha256": "64fd2840914bf3bc19ef6dace5c936264d3c1b8d0314a310541c65d520f65ec1"},
+    {"path": "stopping_paths-part-05.csv", "sha256": "e82d6ba0509765f139c60b13d66917a6bdc4c594e3e61d9e48285f591982e2b9"},
+    {"path": "stopping_paths-part-06.csv", "sha256": "f6b1a09f035a6cb1393b693c699aabcdf9e88689ecb340784bf66bc075469dbc"},
+    {"path": "stopping_paths-part-07.csv", "sha256": "c4c3b6d542e8ac9a14c99cba945f5c6d99cad1a9a1a387212bc4188b506d604f"}
+  ]
+}

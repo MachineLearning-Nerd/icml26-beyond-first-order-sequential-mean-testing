@@ -15,6 +15,12 @@
     "file": "pages/index.md",
     "children": [
       {
+        "slug": "current-claim-2",
+        "title": "Current verification — Claim 2 VERIFIED at paper setting",
+        "file": "pages/current-claim-2/page.md",
+        "children": []
+      },
+      {
         "slug": "current-claim-1",
         "title": "Current verification — Claim 1 VERIFIED",
         "file": "pages/current-claim-1/page.md",
