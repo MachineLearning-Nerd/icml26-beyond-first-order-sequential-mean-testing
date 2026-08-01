@@ -183,7 +183,10 @@ def verify_result(result: dict[str, Any], config: dict[str, Any]) -> dict[str, A
         "dual_remainder": float(largest["t1_rms"]) <= 0.01,
         "dual_relative": float(largest["t1_to_t2_rms_ratio"]) <= 0.02,
         "linear_variance": 0.98 <= float(largest["full_to_t2_variance_ratio"]) <= 1.02,
-        "dual_remainder_trend": all(float(left["t1_rms"]) > float(right["t1_rms"]) for left, right in zip(decomposition_rows, decomposition_rows[1:], strict=True)),
+        "dual_remainder_trend": all(
+            float(left["t1_rms"]) > float(right["t1_rms"])
+            for left, right in zip(decomposition_rows, decomposition_rows[1:])
+        ),
         "anscombe_narrow_window": all(float(row["wilson_high"]) < float(config["eta"]) for row in narrow),
         "anscombe_nested_windows": nested,
     }
