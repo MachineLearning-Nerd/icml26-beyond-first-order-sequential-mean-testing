@@ -178,6 +178,12 @@ def main() -> int:
     claim_3_runtime = time.monotonic() - claim_3_start
     (generated_3 / "verifier_console.txt").write_text(verifier_3.stdout, encoding="utf-8")
     (generated_3 / "checker_console.txt").write_text(checker_3.stdout, encoding="utf-8")
+    verifier_output_3 = generated_3 / "verifier_output.json"
+    if not verifier_output_3.exists():
+        print("CLAIM_3_VERIFIER_OUTPUT_MISSING")
+        print(verifier_3.stdout)
+        print(checker_3.stdout)
+        return 1
     env_3 = environment(
         config,
         claim_3_runtime,
@@ -190,7 +196,7 @@ def main() -> int:
         },
     )
     (generated_3 / "environment.json").write_text(json.dumps(env_3, indent=2), encoding="utf-8")
-    verifier_json_3 = json.loads((generated_3 / "verifier_output.json").read_text(encoding="utf-8"))
+    verifier_json_3 = json.loads(verifier_output_3.read_text(encoding="utf-8"))
     largest_3 = verifier_json_3["largest_decomposition"]
     narrow_3 = verifier_json_3["narrow_anscombe"]
     eval_3 = (
