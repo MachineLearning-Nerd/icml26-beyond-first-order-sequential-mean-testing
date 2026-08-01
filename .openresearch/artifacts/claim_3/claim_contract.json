@@ -1,0 +1,27 @@
+{
+  "claim_id": 3,
+  "paper_anchors": ["Section 4.1 equations (5)-(6), HTML ids S4.E5 and S4.E6", "Lemma A.8, HTML id A1.Thmtheorem8"],
+  "statement": "The normalized empirical KL_inf statistic decomposes exactly as T1,n+T2,n, where the dual-optimization term T1,n is negligible and the iid partial-sum term T2,n supplies the Gaussian fluctuation; Y_n=sqrt(n)(L_n-L) also satisfies the quantified Anscombe condition used at the stopping time.",
+  "finite_scope": {
+    "q": "Bernoulli(0.6)",
+    "m0": 0.2,
+    "decomposition_replicates": 10000,
+    "decomposition_n": [200, 1000, 5000, 50000],
+    "anscombe_replicates": 5000,
+    "anscombe_n": [500, 2000, 10000, 50000],
+    "anscombe_delta": [0.2, 0.1, 0.05, 0.02, 0.01],
+    "epsilon": 0.35,
+    "eta": 0.1
+  },
+  "acceptance": {
+    "max_exact_identity_error": 2e-12,
+    "t1_rms_at_n_50000_max": 0.01,
+    "t1_to_t2_rms_ratio_max": 0.02,
+    "full_to_t2_variance_ratio": [0.98, 1.02],
+    "t1_rms_strictly_decreases": true,
+    "anscombe_delta_0.01_wilson_upper_below_eta_for_n_at_least_10000": true,
+    "anscombe_window_probabilities_nested": true
+  },
+  "negative_controls": ["Replace the empirical optimizer by lambda_star+0.5", "Apply the eta gate to the wide delta=0.2 window"],
+  "scope_warning": "The experiment reconstructs the exact algebra and directly tests Lemma A.8 at one assumption-satisfying paper distribution; finite paths do not prove the universal quantifiers for every q."
+}

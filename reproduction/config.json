@@ -16,6 +16,19 @@
     "seed": 260604211,
     "max_n": 500000
   },
+  "claim_3": {
+    "p": 0.6,
+    "m0": 0.2,
+    "decomposition_replicates": 10000,
+    "decomposition_sizes": [200, 1000, 5000, 50000],
+    "decomposition_seed": 260604221,
+    "anscombe_replicates": 5000,
+    "anscombe_centers": [500, 2000, 10000, 50000],
+    "anscombe_deltas": [0.2, 0.1, 0.05, 0.02, 0.01],
+    "anscombe_seed": 260604231,
+    "epsilon": 0.35,
+    "eta": 0.1
+  },
   "compute": {
     "estimated_cores": 2,
     "backend": "hf",
