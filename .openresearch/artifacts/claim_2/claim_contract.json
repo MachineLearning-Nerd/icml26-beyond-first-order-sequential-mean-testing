@@ -1,0 +1,26 @@
+{
+  "claim_id": 2,
+  "paper_anchor": "Theorem 4.4, HTML id S4.Thmtheorem4; stopping rule equation (3), paragraph S3.SS3.p2",
+  "statement": "For fixed q in Q_bd and m0 in (0,1), under Assumption 4.1, sqrt(log(1/alpha)) (tau_alpha/log(1/alpha) - 1/KL_inf(q,m0)) converges in distribution to N(0, Var_q(ell(lambda*,X))/KL_inf(q,m0)^3) as alpha decreases to zero.",
+  "finite_scope": {
+    "q": "Bernoulli(0.6)",
+    "m0": 0.2,
+    "replicates": 10000,
+    "b_log_inverse_alpha": [4.605170185988092, 9.210340371976184, 18.420680743952367, 36.841361487904734, 147.36544595161894, 589.4617838064758, 2357.8471352259027, 10000.0],
+    "theorem_boundary": "b + 1 + log(2(1+n))",
+    "comparison_boundary": "b",
+    "fixed_safety_horizon": 500000
+  },
+  "acceptance_at_b_10000": {
+    "variance_ratio_95pct_chi_square_interval_contains": 1.0,
+    "ks_distance_max": 0.05,
+    "absolute_standardized_mean_max": 0.12,
+    "absolute_centering_relative_error_max": 0.003,
+    "absolute_skewness_max": 0.12,
+    "absolute_excess_kurtosis_max": 0.12,
+    "gaussian_95_coverage_range": [0.94, 0.96]
+  },
+  "trend": "KS and absolute centering error improve from b=2357.847 to b=10000 and versus b=4.605; variance ratio moves closer to one versus b=4.605.",
+  "negative_controls": ["Apply the b=10000 gate at paper alpha=1e-4", "Normalize by fixed-sample sigma2 instead of sigma2_bd"],
+  "verdict_policy": "Finite simulation directly tests the paper setting and asymptotic direction but does not replace the theorem's proof for all q in Q_bd."
+}
