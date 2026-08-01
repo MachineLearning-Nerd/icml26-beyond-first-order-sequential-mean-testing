@@ -82,6 +82,7 @@ def main() -> int:
         "platform": platform.platform(),
         "selected_backend": config["compute"]["backend"],
         "selected_flavor": config["compute"]["flavor"],
+        "container_image": config["compute"]["image"],
         "estimated_cores": config["compute"]["estimated_cores"],
         "os_cpu_count": os.cpu_count(),
         "affinity_cpu_count": len(affinity) if affinity is not None else None,
