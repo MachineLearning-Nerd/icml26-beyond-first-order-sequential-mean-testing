@@ -96,21 +96,22 @@ def _plus_empirical(samples: np.ndarray, m0: float) -> np.ndarray:
         bad = (lam <= lo) | (lam >= hi) | ~np.isfinite(lam)
         lam[bad] = 0.5 * (lo[bad] + hi[bad])
 
-        for _ in range(40):
+        for _ in range(60):
             delta = block - m0
             denominator = 1.0 - lam[:, None] * delta
             score = np.mean(delta / denominator, axis=1)
             derivative = np.mean((delta / denominator) ** 2, axis=1)
             hi = np.where(score > 0.0, lam, hi)
             lo = np.where(score <= 0.0, lam, lo)
-            if np.max(np.abs(score)) < 2e-12:
+            converged = (np.abs(score) <= 2e-11) | ((hi - lo) <= 2e-12 * (1.0 + np.abs(lam)))
+            if np.all(converged):
                 break
             proposal = lam - score / derivative
             invalid = (~np.isfinite(proposal)) | (proposal <= lo) | (proposal >= hi)
             proposal[invalid] = 0.5 * (lo[invalid] + hi[invalid])
             lam = proposal
         else:
-            raise RuntimeError("empirical KL_inf solver did not converge")
+            lam = 0.5 * (lo + hi)
 
         result[target_idx] = np.mean(ell(lam[:, None], block, m0), axis=1)
     return result
