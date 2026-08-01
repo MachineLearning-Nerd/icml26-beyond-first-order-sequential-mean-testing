@@ -1,0 +1,28 @@
+{
+  "claim_id": 1,
+  "paper_anchor": "Theorem 4.2, HTML id S4.Thmtheorem2",
+  "statement": "For fixed q in Q_bd and m0 in (0,1), with iid Xi~q and Assumption 4.1, sqrt(n)(KL_inf(qhat_n,m0)-KL_inf(q,m0)) converges in distribution to N(0, Var_q(ell(lambda*,X))).",
+  "quantifiers": {
+    "fixed": ["q in Q_bd", "m0 in (0,1)"],
+    "limit": "n -> infinity",
+    "sampling": "iid Xi ~ q",
+    "assumption": "Assumption 4.1"
+  },
+  "finite_scope": {
+    "m0": 0.7,
+    "distributions": ["Beta(3,2)", "Bernoulli(0.6)"],
+    "sample_sizes": [50, 200, 1000, 5000],
+    "replicates_per_cell": 5000
+  },
+  "acceptance": {
+    "at_n_5000": {
+      "variance_ratio_range": [0.9, 1.1],
+      "ks_distance_max": 0.04,
+      "gaussian_95_coverage_wilson_interval_must_contain": 0.95,
+      "absolute_standardized_mean_max": 0.05
+    },
+    "trend": "KS distance at n=5000 must be below its n=50 value for both distributions",
+    "negative_control": "Bernoulli(0.6) at n=50 must fail the n=5000 acceptance gate"
+  },
+  "verdict_policy": "This finite experiment is scoped corroboration of the theorem, not a proof of its universal quantifier. Claim 1 is retained as VERIFIED only together with the paper's proof and direct agreement on both continuous and discrete non-toy settings."
+}

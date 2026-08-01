@@ -1,0 +1,12 @@
+{
+  "control": "Apply the large-n Gaussian gate to the deliberately discrete Bernoulli n=50 cell",
+  "expected": "FAIL",
+  "observed": "FAIL",
+  "failed_checks": [
+    "variance_ratio",
+    "ks_distance",
+    "coverage_interval",
+    "standardized_mean"
+  ],
+  "valid": true
+}

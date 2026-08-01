@@ -1,0 +1,17 @@
+{
+  "status": "VERIFIED",
+  "passed": true,
+  "failures": [],
+  "details": {
+    "Beta(3,2)": {
+      "large_n_gate": true,
+      "failed_checks": [],
+      "ks_trend": true
+    },
+    "Bernoulli(0.6)": {
+      "large_n_gate": true,
+      "failed_checks": [],
+      "ks_trend": true
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "paper": "2606.04520v1",
+  "claim_1": {
+    "m0": 0.7,
+    "replicates": 5000,
+    "sample_sizes": [50, 200, 1000, 5000],
+    "beta": {"a": 3.0, "b": 2.0, "seed": 260604201},
+    "bernoulli": {"p": 0.6, "seed": 260604202}
+  },
+  "compute": {
+    "estimated_cores": 2,
+    "backend": "hf",
+    "flavor": "cpu-upgrade",
+    "image": "ghcr.io/astral-sh/uv:0.8.3-python3.12-bookworm-slim@sha256:74b8fe8ec5931f3930cfb6c87b46aeb1dbd497a609f6abf860fd0f4390f8b040",
+    "gpu_allowed": false
+  }
+}
