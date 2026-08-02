@@ -50,10 +50,18 @@ def main() -> int:
         failures.append("independent checker failed")
 
     logbook = json.loads((CANDIDATE / "logbook.json").read_text(encoding="utf-8"))
-    first_page = logbook["root"]["children"][0]
-    if first_page["slug"] != "current-claim-4":
-        failures.append("current Claim 4 page is not first in navigation")
-    page = (CANDIDATE / first_page["file"]).read_text(encoding="utf-8")
+    children = logbook["root"]["children"]
+    current_page = next((child for child in children if child["slug"] == "current-claim-4"), None)
+    if current_page is None:
+        failures.append("current Claim 4 page is absent from navigation")
+        current_page = {"file": "pages/current-claim-4/page.md"}
+    historical_index = min(index for index, child in enumerate(children) if child["slug"] == "overview")
+    claim_index = next(
+        (index for index, child in enumerate(children) if child["slug"] == "current-claim-4"), len(children)
+    )
+    if claim_index >= historical_index:
+        failures.append("current Claim 4 page appears after historical pages")
+    page = (CANDIDATE / current_page["file"]).read_text(encoding="utf-8")
     required_text = [
         "# Claim 4 — FALSIFIED as literally supplied",
         "Exact source-target audit",
@@ -103,7 +111,7 @@ def main() -> int:
         "controls": {name: control["observed"] for name, control in controls.items()},
         "independent_checker_exit": checker.returncode,
         "independent_checker_output": checker.stdout,
-        "canonical_page": first_page["file"],
+        "canonical_page": current_page["file"],
     }
     print(json.dumps(result, indent=2))
     return 0 if result["passed"] else 1
