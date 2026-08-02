@@ -1,0 +1,24 @@
+{
+  "claim": 4,
+  "paper_result": "Proposition 4.5",
+  "source_anchors": ["S4.Thmtheorem5", "S4.Ex39", "S4.Ex40", "S4.Ex41", "S4.Ex42", "A1.SS4"],
+  "exact_statement": "For fixed q in Q^bd and m0 in (0,1), under Assumption 4.1, v_hat_alpha converges almost surely to sigma_bd^2 as alpha decreases to zero; for every gamma in (0,1), the same-path plug-in interval covers 1/KL_inf(q,m0) with limiting probability 1-gamma.",
+  "tested_instance": {
+    "q": "Bernoulli(0.6)",
+    "m0": 0.2,
+    "assumption_4_1": "Satisfied: q has endpoint atoms and bounded support {0,1}; mean 0.6 differs from m0.",
+    "boundary": "n D(Bernoulli(p_hat_n)||Bernoulli(0.2)) >= b + 1 + log(2(1+n))",
+    "b_values": [147.36544595161894, 589.4617838064758, 2357.8471352259027, 10000.0],
+    "nested_paths": 10000,
+    "gamma_values": [0.05, 0.5],
+    "seed": 260604241
+  },
+  "acceptance": {
+    "largest_b_coverage": "Both 0.95 and 0.50 lie in their respective 95% Wilson intervals.",
+    "largest_b_vhat_ratio": "Mean and median v_hat/sigma_bd^2 are each in [0.97,1.03].",
+    "largest_b_centering": "Absolute relative centering error is at most 0.003.",
+    "trends": "Median and 90th-percentile absolute v_hat errors improve, and both coverage errors improve, from the first to the last scale.",
+    "controls": "The finite-alpha large-scale gate and the wrong KL_inf^2 denominator must fail."
+  },
+  "verdict_scope": "A direct, full Monte Carlo verification of the exact Proposition 4.5 construction for a nondegenerate Bernoulli law. It is not a proof over every q in Q^bd."
+}

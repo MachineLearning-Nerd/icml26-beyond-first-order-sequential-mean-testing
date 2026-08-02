@@ -15,6 +15,7 @@ from pathlib import Path
 from .claim1 import run_claim as run_claim_1
 from .claim2 import run_claim as run_claim_2
 from .claim3 import run_claim as run_claim_3
+from .claim4 import run_claim as run_claim_4
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -22,6 +23,7 @@ ARTIFACTS = ROOT / ".openresearch" / "artifacts"
 CLAIM_1 = ARTIFACTS / "claim_1"
 CLAIM_2 = ARTIFACTS / "claim_2"
 CLAIM_3 = ARTIFACTS / "claim_3"
+CLAIM_4 = ARTIFACTS / "claim_4"
 
 
 def sha256(path: Path) -> str:
@@ -50,7 +52,7 @@ def write_manifest(claim_dir: Path) -> None:
 def make_bundle() -> Path:
     bundle = ARTIFACTS / "cumulative_evidence_bundle.zip"
     with zipfile.ZipFile(bundle, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
-        for claim_dir in (CLAIM_1, CLAIM_2, CLAIM_3):
+        for claim_dir in (CLAIM_1, CLAIM_2, CLAIM_3, CLAIM_4):
             for path in sorted(claim_dir.rglob("*")):
                 if not path.is_file() or "__pycache__" in path.parts:
                     continue
@@ -99,9 +101,11 @@ def main() -> int:
     generated_1 = CLAIM_1 / "generated"
     generated_2 = CLAIM_2 / "generated"
     generated_3 = CLAIM_3 / "generated"
+    generated_4 = CLAIM_4 / "generated"
     generated_1.mkdir(parents=True, exist_ok=True)
     generated_2.mkdir(parents=True, exist_ok=True)
     generated_3.mkdir(parents=True, exist_ok=True)
+    generated_4.mkdir(parents=True, exist_ok=True)
 
     claim_1_start = time.monotonic()
     result_1 = run_claim_1(config["claim_1"], generated_1)
@@ -217,9 +221,49 @@ def main() -> int:
         f"- HF cpu-upgrade runtime: {claim_3_runtime:.3f}s; actual affinity: {env_3['affinity_cpu_count']} CPUs.\n"
     )
     (generated_3 / "EVAL.md").write_text(eval_3, encoding="utf-8")
+
+    claim_4_start = time.monotonic()
+    result_4 = run_claim_4(config["claim_4"], generated_4)
+    verifier_4 = run_script(CLAIM_4 / "verify_claim.py")
+    checker_4 = run_script(CLAIM_4 / "independent_checker.py")
+    candidate_path_4 = ROOT / "space_candidate" / "evidence" / "claim-4" / "verify_claim.py"
+    candidate_4 = run_script(candidate_path_4) if candidate_path_4.exists() else None
+    claim_4_runtime = time.monotonic() - claim_4_start
+    (generated_4 / "verifier_console.txt").write_text(verifier_4.stdout, encoding="utf-8")
+    (generated_4 / "checker_console.txt").write_text(checker_4.stdout, encoding="utf-8")
+    if candidate_4 is not None:
+        (generated_4 / "candidate_verifier_console.txt").write_text(candidate_4.stdout, encoding="utf-8")
+    verifier_output_4 = generated_4 / "verifier_output.json"
+    if not verifier_output_4.exists():
+        print("CLAIM_4_VERIFIER_OUTPUT_MISSING")
+        print(verifier_4.stdout)
+        print(checker_4.stdout)
+        return 1
+    env_4 = environment(config, claim_4_runtime, {"nested_paths": config["claim_4"]["seed"]})
+    env_4["b_values"] = config["claim_4"]["b_values"]
+    env_4["fixed_safety_horizon"] = config["claim_4"]["max_n"]
+    (generated_4 / "environment.json").write_text(json.dumps(env_4, indent=2), encoding="utf-8")
+    verifier_json_4 = json.loads(verifier_output_4.read_text(encoding="utf-8"))
+    largest_4 = verifier_json_4["largest_b"]
+    eval_4 = (
+        f"# EVAL\n\nVerdict: **{verifier_json_4['status']}**\n\n"
+        f"- At b=10000: v-hat mean/median ratios {float(largest_4['vhat_ratio_mean']):.4f}/"
+        f"{float(largest_4['vhat_ratio_median']):.4f}; 95% coverage {float(largest_4['coverage_95']):.4f} "
+        f"(Wilson [{float(largest_4['coverage_95_wilson_low']):.4f}, "
+        f"{float(largest_4['coverage_95_wilson_high']):.4f}]); 50% coverage "
+        f"{float(largest_4['coverage_50']):.4f} (Wilson [{float(largest_4['coverage_50_wilson_low']):.4f}, "
+        f"{float(largest_4['coverage_50_wilson_high']):.4f}]).\n"
+        f"- Every interval used only its own stopped path; 10,000 nested paths assessed coverage and convergence.\n"
+        f"- Negative controls: {[value['observed'] for value in result_4['controls'].values()]}.\n"
+        f"- Verifier/checker/candidate exits: {verifier_4.returncode}/{checker_4.returncode}/"
+        f"{candidate_4.returncode if candidate_4 is not None else 'NA'}.\n"
+        f"- HF cpu-upgrade runtime: {claim_4_runtime:.3f}s; actual affinity: {env_4['affinity_cpu_count']} CPUs.\n"
+    )
+    (generated_4 / "EVAL.md").write_text(eval_4, encoding="utf-8")
     write_manifest(CLAIM_1)
     write_manifest(CLAIM_2)
     write_manifest(CLAIM_3)
+    write_manifest(CLAIM_4)
 
     candidate_exit_1 = candidate_1.returncode if candidate_1 is not None else None
     candidate_exit_2 = candidate_2.returncode if candidate_2 is not None else None
@@ -227,6 +271,8 @@ def main() -> int:
     passed_2 = verifier_2.returncode == 0 and checker_2.returncode == 0 and candidate_exit_2 in {None, 0}
     candidate_exit_3 = candidate_3.returncode if candidate_3 is not None else None
     passed_3 = verifier_3.returncode == 0 and checker_3.returncode == 0 and candidate_exit_3 in {None, 0}
+    candidate_exit_4 = candidate_4.returncode if candidate_4 is not None else None
+    passed_4 = verifier_4.returncode == 0 and checker_4.returncode == 0 and candidate_exit_4 in {None, 0}
     summary = {
         "claim_1": {
             "status": verifier_json_1["status"] if passed_1 else "BLOCKED",
@@ -255,6 +301,16 @@ def main() -> int:
             "controls": result_3["controls"],
             "runtime_seconds": claim_3_runtime,
         },
+        "claim_4": {
+            "status": verifier_json_4["status"] if passed_4 else "BLOCKED",
+            "verifier_exit": verifier_4.returncode,
+            "checker_exit": checker_4.returncode,
+            "candidate_verifier_exit": candidate_exit_4,
+            "largest_b": largest_4,
+            "trends": verifier_json_4["trends"],
+            "controls": result_4["controls"],
+            "runtime_seconds": claim_4_runtime,
+        },
         "actual_affinity_cpus": env_2["affinity_cpu_count"],
         "total_runtime_seconds": time.monotonic() - total_start,
     }
@@ -274,6 +330,11 @@ def main() -> int:
         print(checker_3.stdout)
         if candidate_3 is not None:
             print(candidate_3.stdout)
+    if not passed_4:
+        print(verifier_4.stdout)
+        print(checker_4.stdout)
+        if candidate_4 is not None:
+            print(candidate_4.stdout)
 
     bundle = make_bundle()
     payload = base64.b64encode(bundle.read_bytes()).decode("ascii")
@@ -282,7 +343,7 @@ def main() -> int:
         print(payload[start_index : start_index + 76])
     print("ARTIFACT_BUNDLE_END")
     print("FINAL_SUMMARY=" + json.dumps(summary, sort_keys=True))
-    return 0 if passed_1 and passed_2 and passed_3 else 1
+    return 0 if passed_1 and passed_2 and passed_3 and passed_4 else 1
 
 
 if __name__ == "__main__":
