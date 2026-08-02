@@ -38,6 +38,15 @@
     "seed": 260604241,
     "max_n": 500000
   },
+  "claim_5": {
+    "m0": 0.5,
+    "alphas": [0.01, 0.001, 0.0001],
+    "replicates": 3000,
+    "seed": 260604251,
+    "max_n": 5000,
+    "dssat_repository": "https://github.com/DSSAT/dssat-csm-data",
+    "dssat_commit": "a4f95d3ef36f1358bdeb5db49d498d5db373ba7a"
+  },
   "compute": {
     "estimated_cores": 2,
     "backend": "hf",

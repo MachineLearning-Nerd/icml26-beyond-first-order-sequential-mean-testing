@@ -16,6 +16,7 @@ from .claim1 import run_claim as run_claim_1
 from .claim2 import run_claim as run_claim_2
 from .claim3 import run_claim as run_claim_3
 from .claim4 import run_claim as run_claim_4
+from .claim5 import run_claim as run_claim_5
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -24,6 +25,7 @@ CLAIM_1 = ARTIFACTS / "claim_1"
 CLAIM_2 = ARTIFACTS / "claim_2"
 CLAIM_3 = ARTIFACTS / "claim_3"
 CLAIM_4 = ARTIFACTS / "claim_4"
+CLAIM_5 = ARTIFACTS / "claim_5"
 
 
 def sha256(path: Path) -> str:
@@ -52,7 +54,7 @@ def write_manifest(claim_dir: Path) -> None:
 def make_bundle() -> Path:
     bundle = ARTIFACTS / "cumulative_evidence_bundle.zip"
     with zipfile.ZipFile(bundle, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
-        for claim_dir in (CLAIM_1, CLAIM_2, CLAIM_3, CLAIM_4):
+        for claim_dir in (CLAIM_1, CLAIM_2, CLAIM_3, CLAIM_4, CLAIM_5):
             for path in sorted(claim_dir.rglob("*")):
                 if not path.is_file() or "__pycache__" in path.parts:
                     continue
@@ -102,10 +104,12 @@ def main() -> int:
     generated_2 = CLAIM_2 / "generated"
     generated_3 = CLAIM_3 / "generated"
     generated_4 = CLAIM_4 / "generated"
+    generated_5 = CLAIM_5 / "generated"
     generated_1.mkdir(parents=True, exist_ok=True)
     generated_2.mkdir(parents=True, exist_ok=True)
     generated_3.mkdir(parents=True, exist_ok=True)
     generated_4.mkdir(parents=True, exist_ok=True)
+    generated_5.mkdir(parents=True, exist_ok=True)
 
     claim_1_start = time.monotonic()
     result_1 = run_claim_1(config["claim_1"], generated_1)
@@ -260,10 +264,54 @@ def main() -> int:
         f"- HF cpu-upgrade runtime: {claim_4_runtime:.3f}s; actual affinity: {env_4['affinity_cpu_count']} CPUs.\n"
     )
     (generated_4 / "EVAL.md").write_text(eval_4, encoding="utf-8")
+
+    claim_5_start = time.monotonic()
+    result_5 = run_claim_5(
+        config["claim_5"], generated_5, ARTIFACTS, ROOT / "reproduction" / "data" / "dssat_maize"
+    )
+    verifier_5 = run_script(CLAIM_5 / "verify_claim.py")
+    checker_5 = run_script(CLAIM_5 / "independent_checker.py")
+    candidate_path_5 = ROOT / "space_candidate" / "evidence" / "claim-5" / "verify_claim.py"
+    candidate_5 = run_script(candidate_path_5) if candidate_path_5.exists() else None
+    claim_5_runtime = time.monotonic() - claim_5_start
+    (generated_5 / "verifier_console.txt").write_text(verifier_5.stdout, encoding="utf-8")
+    (generated_5 / "checker_console.txt").write_text(checker_5.stdout, encoding="utf-8")
+    if candidate_5 is not None:
+        (generated_5 / "candidate_verifier_console.txt").write_text(candidate_5.stdout, encoding="utf-8")
+    verifier_output_5 = generated_5 / "verifier_output.json"
+    if not verifier_output_5.exists():
+        print("CLAIM_5_VERIFIER_OUTPUT_MISSING")
+        print(verifier_5.stdout)
+        print(checker_5.stdout)
+        return 1
+    env_5 = environment(config, claim_5_runtime, {"dssat_bootstrap": config["claim_5"]["seed"]})
+    env_5["alphas"] = config["claim_5"]["alphas"]
+    env_5["fixed_safety_horizon"] = config["claim_5"]["max_n"]
+    (generated_5 / "environment.json").write_text(json.dumps(env_5, indent=2), encoding="utf-8")
+    verifier_json_5 = json.loads(verifier_output_5.read_text(encoding="utf-8"))
+    paper_5 = verifier_json_5["paper_alpha"]
+    eval_5 = (
+        f"# EVAL\n\nVerdict: **{verifier_json_5['status']}**\n\n"
+        f"- Exact Section 5 synthetic cross-checks: {verifier_json_5['synthetic']}.\n"
+        f"- Official public DSSAT pool: 44 non-missing HWAM rows from eight of ten pinned Maize A-files.\n"
+        f"- At alpha=1e-4: KS {float(paper_5['ks_distance']):.4f}, variance ratio "
+        f"{float(paper_5['variance_ratio']):.4f}, Gaussian 95% coverage "
+        f"{float(paper_5['gaussian_95_coverage']):.4f}, relative centering error "
+        f"{float(paper_5['centering_relative_error']):.4f}.\n"
+        f"- Decreasing-alpha trends: {verifier_json_5['trends']}.\n"
+        f"- Negative controls: {[value['observed'] for value in result_5['controls'].values()]}.\n"
+        f"- Verifier/checker/candidate exits: {verifier_5.returncode}/{checker_5.returncode}/"
+        f"{candidate_5.returncode if candidate_5 is not None else 'NA'}.\n"
+        f"- HF cpu-upgrade runtime: {claim_5_runtime:.3f}s; actual affinity: {env_5['affinity_cpu_count']} CPUs.\n"
+        f"- Limitation: the paper does not identify its exact DSSAT pool or normalization; this run uses a "
+        f"fully disclosed official public same-domain pool.\n"
+    )
+    (generated_5 / "EVAL.md").write_text(eval_5, encoding="utf-8")
     write_manifest(CLAIM_1)
     write_manifest(CLAIM_2)
     write_manifest(CLAIM_3)
     write_manifest(CLAIM_4)
+    write_manifest(CLAIM_5)
 
     candidate_exit_1 = candidate_1.returncode if candidate_1 is not None else None
     candidate_exit_2 = candidate_2.returncode if candidate_2 is not None else None
@@ -273,6 +321,8 @@ def main() -> int:
     passed_3 = verifier_3.returncode == 0 and checker_3.returncode == 0 and candidate_exit_3 in {None, 0}
     candidate_exit_4 = candidate_4.returncode if candidate_4 is not None else None
     passed_4 = verifier_4.returncode == 0 and checker_4.returncode == 0 and candidate_exit_4 in {None, 0}
+    candidate_exit_5 = candidate_5.returncode if candidate_5 is not None else None
+    passed_5 = verifier_5.returncode == 0 and checker_5.returncode == 0 and candidate_exit_5 in {None, 0}
     summary = {
         "claim_1": {
             "status": verifier_json_1["status"] if passed_1 else "BLOCKED",
@@ -311,6 +361,17 @@ def main() -> int:
             "controls": result_4["controls"],
             "runtime_seconds": claim_4_runtime,
         },
+        "claim_5": {
+            "status": verifier_json_5["status"] if passed_5 else "BLOCKED",
+            "verifier_exit": verifier_5.returncode,
+            "checker_exit": checker_5.returncode,
+            "candidate_verifier_exit": candidate_exit_5,
+            "paper_alpha": paper_5,
+            "trends": verifier_json_5["trends"],
+            "synthetic": verifier_json_5["synthetic"],
+            "controls": result_5["controls"],
+            "runtime_seconds": claim_5_runtime,
+        },
         "actual_affinity_cpus": env_2["affinity_cpu_count"],
         "total_runtime_seconds": time.monotonic() - total_start,
     }
@@ -335,6 +396,11 @@ def main() -> int:
         print(checker_4.stdout)
         if candidate_4 is not None:
             print(candidate_4.stdout)
+    if not passed_5:
+        print(verifier_5.stdout)
+        print(checker_5.stdout)
+        if candidate_5 is not None:
+            print(candidate_5.stdout)
 
     bundle = make_bundle()
     payload = base64.b64encode(bundle.read_bytes()).decode("ascii")
@@ -343,7 +409,7 @@ def main() -> int:
         print(payload[start_index : start_index + 76])
     print("ARTIFACT_BUNDLE_END")
     print("FINAL_SUMMARY=" + json.dumps(summary, sort_keys=True))
-    return 0 if passed_1 and passed_2 and passed_3 and passed_4 else 1
+    return 0 if passed_1 and passed_2 and passed_3 and passed_4 and passed_5 else 1
 
 
 if __name__ == "__main__":
