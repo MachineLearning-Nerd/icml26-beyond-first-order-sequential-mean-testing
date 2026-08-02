@@ -1,0 +1,35 @@
+{
+  "repository": "https://github.com/DSSAT/dssat-csm-data",
+  "commit": "a4f95d3ef36f1358bdeb5db49d498d5db373ba7a",
+  "selection": "all non-missing nonnegative HWAM observations in the ten Maize/*.MZA A-files at the pinned commit",
+  "normalization": "HWAM divided by the maximum HWAM in the selected pool",
+  "candidate_files": 10,
+  "files_with_rows": 8,
+  "valid_rows": 44,
+  "max_hwam_kg_ha": 12340.0,
+  "source_hashes": {
+    "BRPI0202.MZA": "7290aa7086bb99418352f7c8eb54bab0010e4b8bc7b99a87a20dcfe3dce5f444",
+    "EBPL8501.MZA": "572585530ad42b0a8ea90715af4fbf7f05ab09db94a066e650f7671caaaebdd1",
+    "FLSC8101.MZA": "1aa22571dee5318db5f9ae69b42fbaaa54fa430296310dc965effb077ed84728",
+    "GAGR0201.MZA": "d33e562503709aaed5dbf495e293eb167064be6ef38094a13a490d72d1a4074c",
+    "GHWA0401.MZA": "c788fa3fa4ef2cf9e21850a874f30d80c754165f5af66d5e906577a93668a1b6",
+    "IBWA8301.MZA": "9c00471b872a49f278495a009a52022f21b85d3925c1edd105239c356b185f3d",
+    "IUAF9901.MZA": "0efeae163cff0b094f817cd26cb261670c4d4ba6324c5cf5240b47824e830ded",
+    "SIAZ9501.MZA": "664c831fda375b87baab2a770150e0903f762af842eb3e661f93580d2c2ba0d1",
+    "SIAZ9601.MZA": "8ff454c2693e760f126da2412003d7d1b3246c15af935688bc0cc52c02769037",
+    "UFGA8201.MZA": "a7133d0ca7db74136af183d5ed19d998902b11013273410cdd7cff95696279c3"
+  },
+  "rows_per_file": {
+    "BRPI0202.MZA": 8,
+    "EBPL8501.MZA": 2,
+    "FLSC8101.MZA": 1,
+    "GAGR0201.MZA": 0,
+    "GHWA0401.MZA": 0,
+    "IBWA8301.MZA": 6,
+    "IUAF9901.MZA": 4,
+    "SIAZ9501.MZA": 8,
+    "SIAZ9601.MZA": 9,
+    "UFGA8201.MZA": 6
+  },
+  "pool_sha256": "4af7845a8e119e3a37a10327c2633ad8d7d09cf74ad32317271b85abd0cf4b69"
+}

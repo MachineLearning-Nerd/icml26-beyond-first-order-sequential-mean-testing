@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "failures": [],
+  "source_files_hashed": 10,
+  "pool_rows_checked": 44,
+  "raw_paths_checked": 9000,
+  "seed_replay_rows": 9000,
+  "first_hit_inequalities_checked": 9000,
+  "aggregate_metrics_recomputed": 3,
+  "nested_stopping_failures": 0,
+  "independent_scalar_brent_solver": true
+}

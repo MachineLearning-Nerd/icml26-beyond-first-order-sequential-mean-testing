@@ -1,0 +1,58 @@
+{
+  "status": "VERIFIED",
+  "passed": true,
+  "failures": [],
+  "verdict_scope": "Exact Section 5 synthetic protocols plus a disclosed official public-DSSAT same-domain pool; the authors' unidentified pool is not claimed as reproduced.",
+  "paper_alpha": {
+    "replicates": "3000",
+    "standardized_mean": "-0.0943987315195527",
+    "variance_ratio": "0.9396268852742801",
+    "ks_distance": "0.08901501799493305",
+    "gaussian_95_coverage": "0.9693333333333334",
+    "coverage_wilson_low": "0.9625383236081206",
+    "coverage_wilson_high": "0.9749279303883736",
+    "skewness": "0.6585156249941286",
+    "excess_kurtosis": "0.29041103706009164",
+    "alpha": "0.0001",
+    "alpha_label": "1e-4",
+    "b": "9.210340371976184",
+    "mean_tau": "336.7296666666667",
+    "mean_tau_over_b": "36.55995903161367",
+    "target_inverse_klinf": "38.22535036929296",
+    "centering_relative_error": "-0.043567719369215364",
+    "q025_tau": "92.97500000000001",
+    "q975_tau": "687.0500000000002"
+  },
+  "trends": {
+    "ks_strictly_improves": true,
+    "centering_improves": true,
+    "variance_improves": true
+  },
+  "synthetic": {
+    "claim_1": true,
+    "claim_2": true,
+    "constant_boundary_alpha_trend": true,
+    "growing_boundary_alpha_trend": true
+  },
+  "provenance": {
+    "ten_pinned_files": true,
+    "eight_files_with_rows": true,
+    "non_toy_pool": true,
+    "known_maximum": true,
+    "source_hashes": true
+  },
+  "controls": {
+    "wrong_fixed_sample_variance": {
+      "expected": "FAIL",
+      "observed_variance_ratio": 52481.93741595222,
+      "observed": "FAIL",
+      "valid": true
+    },
+    "include_negative_sentinels": {
+      "expected": "FAIL",
+      "observed": "FAIL",
+      "reason": "negative DSSAT sentinel values violate the paper's [0,1] support after positive-max normalization",
+      "valid": true
+    }
+  }
+}

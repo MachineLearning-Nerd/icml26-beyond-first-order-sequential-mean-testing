@@ -1,0 +1,14 @@
+{
+  "wrong_fixed_sample_variance": {
+    "expected": "FAIL",
+    "observed_variance_ratio": 52481.93741595222,
+    "observed": "FAIL",
+    "valid": true
+  },
+  "include_negative_sentinels": {
+    "expected": "FAIL",
+    "observed": "FAIL",
+    "reason": "negative DSSAT sentinel values violate the paper's [0,1] support after positive-max normalization",
+    "valid": true
+  }
+}

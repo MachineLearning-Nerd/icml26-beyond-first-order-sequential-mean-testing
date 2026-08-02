@@ -1,0 +1,15 @@
+{
+  "run_id": "09f9cb25-9e7e-465d-b64a-1c44935a8e60",
+  "git_sha": "3ec478ec40cfc3c229d695117c73c57692fa4802",
+  "backend": "hf",
+  "flavor": "cpu-upgrade",
+  "estimated_cores": 2,
+  "actual_affinity_cpus": 64,
+  "gpu_allowed": false,
+  "claim_5_runtime_seconds": 15.716506092999907,
+  "cumulative_runtime_seconds": 170.35847395099995,
+  "evidence_bundle_sha256": "fc56ad12ec15c4a4d01ee96cbdb813aa13ab8a9e7aff066f9aa08c69c27ecab5",
+  "evidence_bundle_bytes": 8792128,
+  "raw_text_sha256": "6a011b7c7fb7b2bae8dfa7af40a739fe44abbff13cd623cd4f854e7381e010e8",
+  "fixed_command": "uv sync --frozen && .venv/bin/python -m reproduction.run"
+}

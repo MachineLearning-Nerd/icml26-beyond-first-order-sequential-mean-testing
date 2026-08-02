@@ -1,0 +1,19 @@
+{
+  "claim": 5,
+  "source_anchors": ["S5", "S5.F1", "S5.F2", "S5.F3", "S5.F4", "S5.F5", "S3.E3", "S5.E7", "S5.E8"],
+  "literal_campaign_claim": "Numerical experiments on synthetic Beta and Bernoulli distributions and on real crop-yield data show empirical stopping-time distributions converging to the theoretical Gaussian limit, with stronger agreement at smaller significance levels alpha.",
+  "scope_correction": "Section 5 uses Beta(3,2) and Bernoulli(0.6) for the fixed-sample KL_inf CLT. Its synthetic stopping-time experiment uses Bernoulli(0.6) only. The real-data stopping-time experiment uses an unidentified DSSAT crop-yield pool.",
+  "tested_contract": {
+    "synthetic_fixed_sample": "The cumulative exact Experiment 1 verifier must pass for Beta(3,2) and Bernoulli(0.6) at m0=0.7 and 5000 paths, with improved fit as n grows.",
+    "synthetic_stopping": "At m0=0.2, the exact growing and constant boundaries must each have smaller KS distance at alpha=1e-8 than alpha=1e-4 for Bernoulli(0.6).",
+    "real_data": "At m0=0.5 and the constant log(1/alpha) boundary, 3000 with-replacement bootstrap paths from a pinned official public DSSAT maize HWAM pool must agree with the plug-in Gaussian at the paper level alpha=1e-4 and improve over larger alpha values.",
+    "provenance": "All ten official Maize A-files are pinned by SHA-256 at DSSAT/dssat-csm-data commit a4f95d3ef36f1358bdeb5db49d498d5db373ba7a; all nonnegative HWAM rows are retained and normalized by the selected-pool maximum."
+  },
+  "acceptance": {
+    "paper_alpha": "KS <= 0.12, variance ratio in [0.85,1.15], Gaussian 95% mass in [0.93,0.98], and absolute relative centering error <= 0.07.",
+    "alpha_trend": "DSSAT KS strictly improves at every alpha step; centering and variance error improve from alpha=1e-2 to alpha=1e-4.",
+    "synthetic": "Claims 1 and 2 remain VERIFIED and both paper boundary choices improve in KS from alpha=1e-4 to alpha=1e-8.",
+    "controls": "Using fixed-sample rather than boundary variance and retaining negative DSSAT sentinels must fail."
+  },
+  "verdict_scope": "Finite, reproducible verification of the Section 5 mechanism with exact synthetic settings and a disclosed official public-DSSAT same-domain pool. The paper does not release enough information to claim an exact numerical reproduction of its author-specific crop pool."
+}

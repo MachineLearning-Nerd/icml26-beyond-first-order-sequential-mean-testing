@@ -1,0 +1,15 @@
+{
+  "seed": 260604251,
+  "replicates": 3000,
+  "alphas": [
+    0.01,
+    0.001,
+    0.0001
+  ],
+  "m0": 0.5,
+  "boundary": "constant log(1/alpha), paper equation (8)",
+  "bootstrap": "with replacement from the empirical pool",
+  "final_simulated_n": 1038,
+  "all_paths_stopped": true,
+  "author_exact_pool_available": false
+}

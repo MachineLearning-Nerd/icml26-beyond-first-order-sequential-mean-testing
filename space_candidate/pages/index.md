@@ -4,6 +4,7 @@
 
 | Page |
 | --- |
+| [Current verification — Claim 5 VERIFIED for declared Section 5 contract](#/current-claim-5) |
 | [Current verification — Claim 4 FALSIFIED as literally supplied](#/current-claim-4) |
 | [Current verification — Claim 3 VERIFIED for declared finite contract](#/current-claim-3) |
 | [Current verification — Claim 2 VERIFIED at paper setting](#/current-claim-2) |
