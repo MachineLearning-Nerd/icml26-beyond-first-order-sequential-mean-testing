@@ -1,0 +1,11 @@
+{
+  "format": "CSV with repeated header",
+  "rows_per_part": 10000,
+  "total_data_rows": 40000,
+  "parts": [
+    {"path": "single-run-ci-paths-part-00.csv", "sha256": "1889d5e1caa908d88a83d9efb68082b31ad3299996b31ebcc633547faffeb6da"},
+    {"path": "single-run-ci-paths-part-01.csv", "sha256": "967ed908620bc1264bbc7291eee9a85564d53d36b416899692e1a4aac6dd580a"},
+    {"path": "single-run-ci-paths-part-02.csv", "sha256": "02c4f1e929b0fb04424ac9417c99b5f2a3bca6c54a08bb3ed6b3c772e7518e76"},
+    {"path": "single-run-ci-paths-part-03.csv", "sha256": "9b1473aa0b8c710adc5e2fbc5bff1ca32580fe504a2777225b1f87bb146369d9"}
+  ]
+}

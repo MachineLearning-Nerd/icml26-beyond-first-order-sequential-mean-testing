@@ -1,0 +1,26 @@
+{
+  "finite_alpha_asymptotic_gate": {
+    "expected": "FAIL",
+    "observed": "FAIL",
+    "failed_checks": [
+      "coverage_95",
+      "coverage_50",
+      "center"
+    ],
+    "valid": true
+  },
+  "wrong_klinf_power": {
+    "expected": "FAIL",
+    "observed_coverage_95": 0.777,
+    "observed": "FAIL",
+    "valid": true
+  },
+  "literal_stopping_time_target": {
+    "expected": "FAIL",
+    "reason": "An interval centered on the observed tau/b contains that same tau/b identically, so it cannot have nominal 1-gamma coverage for the random stopping time itself.",
+    "observed_95": 1.0,
+    "observed_50": 1.0,
+    "observed": "FAIL",
+    "valid": true
+  }
+}

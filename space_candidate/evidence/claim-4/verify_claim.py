@@ -13,34 +13,29 @@ CANDIDATE = HERE.parents[1]
 
 
 def main() -> int:
-    with (HERE / "decomposition_metrics.csv").open(newline="", encoding="utf-8") as handle:
-        decomposition = sorted(csv.DictReader(handle), key=lambda row: int(row["n"]))
-    with (HERE / "anscombe_metrics.csv").open(newline="", encoding="utf-8") as handle:
-        anscombe = list(csv.DictReader(handle))
-    largest = decomposition[-1]
-    narrow = [row for row in anscombe if int(row["n"]) >= 10000 and float(row["delta"]) == 0.01]
-    probabilities = {
-        (int(row["n"]), float(row["delta"])): float(row["exceedance_probability"])
-        for row in anscombe
-    }
+    with (HERE / "single_run_ci_metrics.csv").open(newline="", encoding="utf-8") as handle:
+        rows = sorted(csv.DictReader(handle), key=lambda row: float(row["b"]))
+    largest = rows[-1]
     checks = {
-        "identity": float(largest["max_identity_error"]) <= 2e-12,
-        "dual_remainder": float(largest["t1_rms"]) <= 0.01,
-        "dual_relative": float(largest["t1_to_t2_rms_ratio"]) <= 0.02,
-        "linear_variance": 0.98 <= float(largest["full_to_t2_variance_ratio"]) <= 1.02,
-        "dual_remainder_trend": all(
-            float(left["t1_rms"]) > float(right["t1_rms"])
-            for left, right in zip(decomposition, decomposition[1:])
-        ),
-        "anscombe_narrow_window": all(float(row["wilson_high"]) < 0.1 for row in narrow),
-        "anscombe_nested_windows": all(
-            probabilities[(n, smaller)] <= probabilities[(n, larger)]
-            for n in [500, 2000, 10000, 50000]
-            for smaller, larger in zip([0.01, 0.02, 0.05, 0.1], [0.02, 0.05, 0.1, 0.2], strict=True)
-        ),
+        "coverage_95": float(largest["coverage_95_wilson_low"]) <= 0.95 <= float(largest["coverage_95_wilson_high"]),
+        "coverage_50": float(largest["coverage_50_wilson_low"]) <= 0.50 <= float(largest["coverage_50_wilson_high"]),
+        "vhat_mean": 0.97 <= float(largest["vhat_ratio_mean"]) <= 1.03,
+        "vhat_median": 0.97 <= float(largest["vhat_ratio_median"]) <= 1.03,
+        "center": abs(float(largest["center_relative_error"])) <= 0.003,
+        "vhat_median_error_improves": float(rows[-1]["vhat_relative_error_median"])
+        < float(rows[-2]["vhat_relative_error_median"])
+        < float(rows[0]["vhat_relative_error_median"]),
+        "vhat_q90_error_improves": float(rows[-1]["vhat_relative_error_q90"])
+        < float(rows[-2]["vhat_relative_error_q90"])
+        < float(rows[0]["vhat_relative_error_q90"]),
+        "coverage_95_improves": abs(float(rows[-1]["coverage_95"]) - 0.95)
+        < abs(float(rows[0]["coverage_95"]) - 0.95),
+        "coverage_50_improves": abs(float(rows[-1]["coverage_50"]) - 0.50)
+        < abs(float(rows[0]["coverage_50"]) - 0.50),
+        "literal_self_coverage_95": float(largest["literal_self_coverage_95"]) == 1.0,
+        "literal_self_coverage_50": float(largest["literal_self_coverage_50"]) == 1.0,
     }
     failures = [name for name, passed in checks.items() if not passed]
-
     controls = json.loads((HERE / "negative_controls.json").read_text(encoding="utf-8"))
     failures.extend(name for name, control in controls.items() if control["observed"] != "FAIL" or not control["valid"])
     checker = subprocess.run(
@@ -55,21 +50,20 @@ def main() -> int:
         failures.append("independent checker failed")
 
     logbook = json.loads((CANDIDATE / "logbook.json").read_text(encoding="utf-8"))
-    children = logbook["root"]["children"]
-    current_index = next((index for index, child in enumerate(children) if child["slug"] == "current-claim-3"), None)
-    historical_index = next((index for index, child in enumerate(children) if child["slug"] == "overview"), len(children))
-    if current_index is None or current_index >= historical_index:
-        failures.append("current Claim 3 page is not reachable before historical pages")
-    current_page = children[current_index] if current_index is not None else children[0]
-    page = (CANDIDATE / current_page["file"]).read_text(encoding="utf-8")
+    first_page = logbook["root"]["children"][0]
+    if first_page["slug"] != "current-claim-4":
+        failures.append("current Claim 4 page is not first in navigation")
+    page = (CANDIDATE / first_page["file"]).read_text(encoding="utf-8")
     required_text = [
-        "# Claim 3 — VERIFIED for the declared finite contract",
-        "Exact claim contract",
-        "Lemma A.8",
-        "140,000",
+        "# Claim 4 — FALSIFIED as literally supplied",
+        "Exact source-target audit",
+        "0.9513",
+        "0.5010",
+        "1.00043",
+        "40,000",
         "Current nonzero-exit verifier",
-        "Both controls fail",
-        "does not prove the universal quantifiers",
+        "coverage one",
+        "not a prediction interval",
     ]
     failures.extend(f"canonical page missing: {text}" for text in required_text if text not in page)
     required_files = [
@@ -77,16 +71,15 @@ def main() -> int:
         "source_audit.md",
         "method.md",
         "limitations.md",
-        "decomposition_metrics.csv",
-        "anscombe_metrics.csv",
+        "single_run_ci_metrics.csv",
         "checker_output.json",
         "negative_controls.json",
         "environment.json",
         "raw_parts_manifest.json",
     ]
     failures.extend(f"candidate missing: {name}" for name in required_files if not (HERE / name).is_file())
-    if len(list(HERE.glob("claim3-raw-part-*.csv"))) != 7:
-        failures.append("raw Claim 3 CSV parts missing")
+    if len(list(HERE.glob("single-run-ci-paths-part-*.csv"))) != 4:
+        failures.append("raw Claim 4 CSV parts missing")
 
     protected_root = CANDIDATE / "historical" / "judged-7f2c76f4"
     manifest = CANDIDATE / "evidence" / "protected-judged-revision-manifest.sha256"
@@ -101,17 +94,16 @@ def main() -> int:
             failures.append(f"protected historical hash mismatch: {relative}")
 
     result = {
-        "claim": 3,
-        "status": "VERIFIED" if not failures else "BLOCKED",
+        "claim": 4,
+        "status": "FALSIFIED" if not failures else "BLOCKED",
         "passed": not failures,
         "failures": failures,
-        "largest_decomposition": largest,
-        "narrow_anscombe": narrow,
+        "largest_b": largest,
         "checks": checks,
         "controls": {name: control["observed"] for name, control in controls.items()},
         "independent_checker_exit": checker.returncode,
         "independent_checker_output": checker.stdout,
-        "canonical_page": current_page["file"],
+        "canonical_page": first_page["file"],
     }
     print(json.dumps(result, indent=2))
     return 0 if result["passed"] else 1

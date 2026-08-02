@@ -1,0 +1,66 @@
+{
+  "status": "FALSIFIED",
+  "passed": true,
+  "failures": [],
+  "largest_b": {
+    "alpha_label": "exp(-10000)",
+    "b": "10000.0",
+    "replicates": "10000",
+    "seed": "260604241",
+    "mean_tau": "26219.0832",
+    "mean_tau_over_b": "2.62190832",
+    "target_inverse_klinf": "2.6184282293850227",
+    "center_relative_error": "0.0013290761900297725",
+    "sigma2_bd": "13.832245291385126",
+    "sigma_hat2_ratio_mean": "1.000040348207647",
+    "vhat_ratio_mean": "1.0004299662714256",
+    "vhat_ratio_median": "1.0001564991345029",
+    "vhat_relative_error_median": "0.020789619348091204",
+    "vhat_relative_error_q90": "0.050693644988451414",
+    "coverage_95": "0.9513",
+    "coverage_95_wilson_low": "0.9469053240451971",
+    "coverage_95_wilson_high": "0.9553480790254302",
+    "coverage_50": "0.501",
+    "coverage_50_wilson_low": "0.4912016974054053",
+    "coverage_50_wilson_high": "0.5107975345978534",
+    "mean_width_95": "0.14580285270980564",
+    "mean_width_50": "0.050175682042030496",
+    "wrong_power2_coverage_95": "0.777",
+    "literal_self_coverage_95": "1.0",
+    "literal_self_coverage_50": "1.0",
+    "min_p_hat": "0.5889612739775606",
+    "max_p_hat": "0.6136160532943374"
+  },
+  "trends": {
+    "vhat_median_error_improves": true,
+    "vhat_q90_error_improves": true,
+    "coverage_95_improves": true,
+    "coverage_50_improves": true
+  },
+  "controls": {
+    "finite_alpha_asymptotic_gate": {
+      "expected": "FAIL",
+      "observed": "FAIL",
+      "failed_checks": [
+        "coverage_95",
+        "coverage_50",
+        "center"
+      ],
+      "valid": true
+    },
+    "wrong_klinf_power": {
+      "expected": "FAIL",
+      "observed_coverage_95": 0.777,
+      "observed": "FAIL",
+      "valid": true
+    },
+    "literal_stopping_time_target": {
+      "expected": "FAIL",
+      "reason": "An interval centered on the observed tau/b contains that same tau/b identically, so it cannot have nominal 1-gamma coverage for the random stopping time itself.",
+      "observed_95": 1.0,
+      "observed_50": 1.0,
+      "observed": "FAIL",
+      "valid": true
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "failures": [],
+  "raw_paths_checked": 40000,
+  "expected_raw_paths": 40000,
+  "seed_replay": true,
+  "replay_final_n": 27630,
+  "nested_stopping_failures": 0,
+  "first_hit_checked": true,
+  "same_path_plugin_recomputed": true,
+  "literal_stopping_time_self_coverage": 1.0
+}
