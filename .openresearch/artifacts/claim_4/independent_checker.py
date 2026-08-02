@@ -60,6 +60,7 @@ def main() -> int:
     z95, z50 = 1.959963984540054, 0.6744897501960817
     checked = 0
     nesting_failures = 0
+    self_coverage_failures = 0
     for path in range(10000):
         if any(taus[index][path] > taus[index + 1][path] for index in range(3)):
             nesting_failures += 1
@@ -116,10 +117,17 @@ def main() -> int:
             if int(row["covers_95"]) != expected_cover95 or int(row["covers_50"]) != expected_cover50:
                 failures.append(f"coverage mismatch {label}/{path}")
                 continue
+            if not (
+                expected["lower_95"] <= center <= expected["upper_95"]
+                and expected["lower_50"] <= center <= expected["upper_50"]
+            ):
+                self_coverage_failures += 1
             checked += 1
 
     if nesting_failures:
         failures.append(f"{nesting_failures} paths violate nested stopping times")
+    if self_coverage_failures:
+        failures.append(f"{self_coverage_failures} intervals fail to contain their own center")
     result = {
         "passed": not failures,
         "failures": failures[:20],
@@ -130,6 +138,7 @@ def main() -> int:
         "nested_stopping_failures": nesting_failures,
         "first_hit_checked": True,
         "same_path_plugin_recomputed": True,
+        "literal_stopping_time_self_coverage": 1.0 if not self_coverage_failures else None,
     }
     (generated / "checker_output.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
     print(json.dumps(result, indent=2))

@@ -145,6 +145,8 @@ def run_claim(config: dict[str, Any], output_dir: Path) -> dict[str, Any]:
                 "mean_width_95": float(np.mean(upper95 - lower95)),
                 "mean_width_50": float(np.mean(upper50 - lower50)),
                 "wrong_power2_coverage_95": float(np.mean(wrong_cover95)),
+                "literal_self_coverage_95": float(np.mean((lower95 <= center) & (center <= upper95))),
+                "literal_self_coverage_50": float(np.mean((lower50 <= center) & (center <= upper50))),
                 "min_p_hat": float(np.min(plugin["p_hat"])),
                 "max_p_hat": float(np.max(plugin["p_hat"])),
             }
@@ -239,6 +241,14 @@ def run_claim(config: dict[str, Any], output_dir: Path) -> dict[str, Any]:
             "observed": "PASS" if 0.94 <= float(largest["wrong_power2_coverage_95"]) <= 0.96 else "FAIL",
             "valid": not (0.94 <= float(largest["wrong_power2_coverage_95"]) <= 0.96),
         },
+        "literal_stopping_time_target": {
+            "expected": "FAIL",
+            "reason": "An interval centered on the observed tau/b contains that same tau/b identically, so it cannot have nominal 1-gamma coverage for the random stopping time itself.",
+            "observed_95": largest["literal_self_coverage_95"],
+            "observed_50": largest["literal_self_coverage_50"],
+            "observed": "FAIL",
+            "valid": largest["literal_self_coverage_95"] == 1.0 and largest["literal_self_coverage_50"] == 1.0,
+        },
     }
     theory = {**reference, "inverse_klinf": target, "sigma2_bd": sigma2_bd}
     diagnostics = {"final_n": final_n, "max_n": int(config["max_n"]), "nested_paths": True}
@@ -268,7 +278,7 @@ def verify_result(result: dict[str, Any]) -> dict[str, Any]:
     failures.extend(name for name, ok in trends.items() if not ok)
     failures.extend(name for name, control in result["controls"].items() if not control["valid"])
     return {
-        "status": "VERIFIED" if not failures else "BLOCKED",
+        "status": "FALSIFIED" if not failures else "BLOCKED",
         "passed": not failures,
         "failures": failures,
         "largest_b": largest,

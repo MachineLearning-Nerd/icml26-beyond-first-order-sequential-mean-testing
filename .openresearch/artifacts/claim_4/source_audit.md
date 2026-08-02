@@ -14,4 +14,6 @@ has limiting coverage `1-gamma` for `1/KL_inf(q,m0)` as `alpha` decreases to zer
 
 The paragraph after the proposition says the variance estimate is computed along the same run that produces `tau_alpha`; independent replicates are not needed to construct one interval. Repeated paths in this reproduction estimate coverage only. Appendix `A1.SS4` proves variance consistency using equation (22), Lemma A.5, continuous mapping, and `tau_alpha -> infinity`; the `m0 < mean(q)` direction uses the reflected `KL_inf^-` formula.
 
+This falsifies the literal campaign wording “confidence intervals for the stopping time.” The displayed event covers the deterministic normalized center `1/KL_inf(q,m0)`. If the same interval is reinterpreted as covering the observed `tau_alpha/log(1/alpha)`, it contains that quantity identically because the interval is centered on it, yielding coverage one rather than `1-gamma`. Multiplying through by `log(1/alpha)` produces an interval for the deterministic first-order center, not a prediction interval for a future random stopping time.
+
 The tested Bernoulli(0.6), `m0=0.2` instance has bounded support, unequal mean, and endpoint atoms, so the boundary regularity clause in Assumption 4.1 is satisfied. The significance scales were inherited from the independent Claim 2 calibration and fixed before observing Claim 4 coverage.

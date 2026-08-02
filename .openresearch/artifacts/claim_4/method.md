@@ -6,4 +6,6 @@ At each path's stopping time, compute `p_hat`, the exact Bernoulli `KL_inf^-`, t
 
 The independent checker replays the seeded random paths, checks first-hit inequalities, recomputes every estimator and interval from stopped sufficient statistics, checks nested stopping times, and compares all 40,000 raw records. The verifier exits nonzero unless the predeclared largest-scale and trend gates pass. Controls deliberately apply an asymptotic gate at the first scale and replace the cubic denominator by a square.
 
+The literal supplied claim is checked separately from the proposition's actual formula. The source target is audited, and the checker confirms algebraically on every raw record that the displayed interval contains its own observed `tau/b` exactly. Thus a stopping-time-self-coverage reading has coverage one, not the claimed nominal levels. The final claim verdict is `FALSIFIED` only if this target mismatch and all actual-formula checks pass.
+
 Fixed command: `uv sync --frozen && .venv/bin/python -m reproduction.run`.

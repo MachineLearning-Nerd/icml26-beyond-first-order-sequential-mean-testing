@@ -5,3 +5,4 @@
 - Coverage is assessed with 10,000 paths; its Monte Carlo uncertainty is reported with Wilson intervals.
 - The fixed safety horizon 500,000 is not theorem-derived. A run is invalid and exits nonzero if any path reaches it unresolved.
 - The Bernoulli dual and `KL_inf^-` have closed forms, avoiding numerical optimization error. This is faithful for the tested law but does not exercise a generic continuous-law optimizer.
+- The `FALSIFIED` verdict applies to the literal campaign wording “interval for the stopping time,” not to Proposition 4.5's displayed `1/KL_inf` coverage statement.
