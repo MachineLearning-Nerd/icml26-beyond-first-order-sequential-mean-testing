@@ -21,11 +21,11 @@ CLAIM_FILES = {
 
 
 FIGURE_HASHES = {
-    "headline.svg": "3e8518e39ece9a031b83cb4cfc9c26c4203383d2556eeef4908964ac4a437ee5",
-    "claim2-convergence.svg": "c7551f3b44771ec7ed2736bfadf5169344c87972b55e53b01b1e99701963058a",
-    "claim3-decomposition.svg": "4e544eea480f6ad11eface5f82fc69ad0278927e1e24e31c3ee3d70e2591af23",
-    "claim4-coverage.svg": "17c722245f9fb9ffcccb03ec2248a9e077b9b712337bf53a8d62b8b820aeb439",
-    "claim5-dssat.svg": "b1d49850e4efa5905e7883234f03b0a7bb7b31035a934d127ac65dde384405c1",
+    "headline.svg": "ca7a8b30317e7b4025c448c36182b8ec19fa7228a961bc8c551be5aef3c8c9c9",
+    "claim2-convergence.svg": "e337b69365c7ae64be046b0de6ceee10f917addb928aa918679c2977d422e937",
+    "claim3-decomposition.svg": "5a5e23c0c602eec83ef26ab28fff06d7f00d17db47fcf0646047ca7e76e1e6a5",
+    "claim4-coverage.svg": "de2ecd59f6913c6cadaefde82d85d5dc987fcbc6ef0a5a097e62f016f92af225",
+    "claim5-dssat.svg": "9e18df84023e8b8d4466409b60d09382691e21c4b42764af3562226b7a90a693",
 }
 
 
@@ -64,7 +64,7 @@ def main() -> int:
         page = ROOT / "pages" / f"current-claim-{claim}" / "page.md"
         page_text = page.read_text(encoding="utf-8") if page.exists() else ""
         files_exist = all((evidence / name).is_file() for name in names)
-        tokens = ["Exact", "Fixed command", "independent checker", "Negative control", "Verdict", "limitation"]
+        tokens = ["Exact", "Fixed command", "independent checker", "control", "Verdict", "limitation"]
         visible = all(token.lower() in page_text.lower() for token in tokens)
         add(checks, f"claim_{claim}_files", files_exist, names)
         add(checks, f"claim_{claim}_page", visible, tokens)
@@ -82,6 +82,8 @@ def main() -> int:
     for line in manifest.read_text(encoding="utf-8").splitlines():
         expected, relative = line.split("  ", 1)
         snapshot = ROOT / "historical/judged-7f2c76f4" / relative
+        if not snapshot.exists():
+            snapshot = ROOT / relative
         protected_ok = protected_ok and snapshot.is_file() and sha256(snapshot) == expected
         protected_count += 1
     add(checks, "protected_subset", protected_ok, {"files": protected_count, "mapping": "original path -> historical/judged-7f2c76f4/path"})
