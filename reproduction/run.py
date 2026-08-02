@@ -421,11 +421,13 @@ def main() -> int:
         print(candidate_run.stdout)
 
     bundle = make_bundle()
-    payload = base64.b64encode(bundle.read_bytes()).decode("ascii")
-    print(f"ARTIFACT_BUNDLE_BEGIN sha256={sha256(bundle)} bytes={bundle.stat().st_size}")
-    for start_index in range(0, len(payload), 76):
-        print(payload[start_index : start_index + 76])
-    print("ARTIFACT_BUNDLE_END")
+    print(f"ARTIFACT_BUNDLE sha256={sha256(bundle)} bytes={bundle.stat().st_size}")
+    for figure in figures:
+        payload = base64.b64encode(figure.read_bytes()).decode("ascii")
+        print(f"RELEASE_FIGURE_BEGIN name={figure.name} sha256={sha256(figure)} bytes={figure.stat().st_size}")
+        for start_index in range(0, len(payload), 76):
+            print(payload[start_index : start_index + 76])
+        print("RELEASE_FIGURE_END")
     print("FINAL_SUMMARY=" + json.dumps(summary, sort_keys=True))
     return 0 if passed_1 and passed_2 and passed_3 and passed_4 and passed_5 and candidate_run.returncode == 0 else 1
 
