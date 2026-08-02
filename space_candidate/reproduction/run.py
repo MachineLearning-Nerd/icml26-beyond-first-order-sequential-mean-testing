@@ -10,6 +10,7 @@ from pathlib import Path
 
 from .claim1 import run_claim as run_claim_1
 from .claim2 import run_claim as run_claim_2
+from .claim3 import run_claim as run_claim_3
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -31,12 +32,14 @@ def main() -> int:
     config = json.loads((ROOT / "reproduction" / "config.json").read_text(encoding="utf-8"))
     generated_1 = ROOT / ".generated" / "claim-1"
     generated_2 = ROOT / ".generated" / "claim-2"
+    generated_3 = ROOT / ".generated" / "claim-3"
     run_claim_1(config["claim_1"], generated_1)
     run_claim_2(config["claim_2"], generated_2)
+    run_claim_3(config["claim_3"], generated_3)
 
     results = {}
     passed = True
-    for claim in (1, 2):
+    for claim in (1, 2, 3):
         verifier = run_verifier(claim)
         results[f"claim_{claim}"] = {
             "exit": verifier.returncode,

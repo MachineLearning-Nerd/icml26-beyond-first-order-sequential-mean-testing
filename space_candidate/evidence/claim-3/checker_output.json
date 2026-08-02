@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "failures": [],
+  "decomposition_paths_checked": 40000,
+  "anscombe_paths_checked": 100000,
+  "anscombe_seed_replay": true,
+  "nested_window_failures": 0
+}

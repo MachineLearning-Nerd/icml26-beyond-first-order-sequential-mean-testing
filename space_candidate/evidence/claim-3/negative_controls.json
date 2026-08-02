@@ -1,0 +1,14 @@
+{
+  "wrong_dual_parameter": {
+    "expected": "FAIL",
+    "observed": "FAIL",
+    "wrong_lambda_rms": 2.899762700657831,
+    "valid": true
+  },
+  "wide_anscombe_window": {
+    "expected": "FAIL",
+    "observed": "FAIL",
+    "exceedance_probability": 0.9252,
+    "valid": true
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "status": "VERIFIED",
+  "passed": true,
+  "failures": [],
+  "checks": {
+    "identity": true,
+    "dual_remainder": true,
+    "dual_relative": true,
+    "linear_variance": true,
+    "dual_remainder_trend": true,
+    "anscombe_narrow_window": true,
+    "anscombe_nested_windows": true
+  },
+  "largest_decomposition": {
+    "n": "50000",
+    "replicates": "10000",
+    "t1_rms": "0.0039024374687535394",
+    "t2_rms": "0.8790286677218027",
+    "t1_to_t2_rms_ratio": "0.004439488280703711",
+    "full_variance": "0.772449694328166",
+    "t2_variance": "0.7723514157017073",
+    "full_to_t2_variance_ratio": "1.0001272459976907",
+    "max_identity_error": "4.440892098500626e-16",
+    "wrong_lambda_rms": "2.899762700657831"
+  },
+  "narrow_anscombe": [
+    {
+      "n": "10000",
+      "delta": "0.01",
+      "epsilon": "0.35",
+      "replicates": "5000",
+      "exceedances": "2",
+      "exceedance_probability": "0.0004",
+      "wilson_low": "0.00010970128207763504",
+      "wilson_high": "0.0014573865014234437",
+      "mean_oscillation": "0.1302500007440431",
+      "q95_oscillation": "0.214849356172925",
+      "max_oscillation": "0.37357789704642075",
+      "seed": "260604233"
+    },
+    {
+      "n": "50000",
+      "delta": "0.01",
+      "epsilon": "0.35",
+      "replicates": "5000",
+      "exceedances": "0",
+      "exceedance_probability": "0.0",
+      "wilson_low": "0.0",
+      "wilson_high": "0.0007677019450571244",
+      "mean_oscillation": "0.13235913849563616",
+      "q95_oscillation": "0.21686868040772259",
+      "max_oscillation": "0.33788958680557546",
+      "seed": "260604234"
+    }
+  ],
+  "controls": {
+    "wrong_dual_parameter": {
+      "expected": "FAIL",
+      "observed": "FAIL",
+      "wrong_lambda_rms": 2.899762700657831,
+      "valid": true
+    },
+    "wide_anscombe_window": {
+      "expected": "FAIL",
+      "observed": "FAIL",
+      "exceedance_probability": 0.9252,
+      "valid": true
+    }
+  }
+}

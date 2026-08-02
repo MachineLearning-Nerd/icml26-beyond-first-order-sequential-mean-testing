@@ -1,0 +1,14 @@
+{
+  "format": "CSV with repeated header",
+  "rows_per_part": 20000,
+  "total_data_rows": 140000,
+  "parts": [
+    {"path": "claim3-raw-part-00.csv", "sha256": "bd2fe17996f134fcc88648cd61249519b2f2af8e349a5209a2cde4de40c9e709"},
+    {"path": "claim3-raw-part-01.csv", "sha256": "c089ba899cc17dc2048c40bfa3085966fcacbd80131dd60ad6b77b565dd5b1bb"},
+    {"path": "claim3-raw-part-02.csv", "sha256": "477317a10ba2e78090db2c71f3e7a2cb97fd253c2f0edb54d36d4962e4ea8aaf"},
+    {"path": "claim3-raw-part-03.csv", "sha256": "f5454c9d13d41544f07f72b7792b7a848e4cd066790c9833dd484fded8bd75bb"},
+    {"path": "claim3-raw-part-04.csv", "sha256": "2e6b39532f6423bae2be5e5cfb41d2ee6ef5f5a702b611e715974ab4a4cd30ae"},
+    {"path": "claim3-raw-part-05.csv", "sha256": "91477b4e6452528a0c5292f8eb166940a3ecf9a7c094f5b7c6aa175ab7415528"},
+    {"path": "claim3-raw-part-06.csv", "sha256": "ea616a405c374bc042de9621618276306ee45e4ff808d0339748550cc2ed3ae2"}
+  ]
+}

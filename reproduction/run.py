@@ -175,9 +175,13 @@ def main() -> int:
     result_3 = run_claim_3(config["claim_3"], generated_3)
     verifier_3 = run_script(CLAIM_3 / "verify_claim.py")
     checker_3 = run_script(CLAIM_3 / "independent_checker.py")
+    candidate_path_3 = ROOT / "space_candidate" / "evidence" / "claim-3" / "verify_claim.py"
+    candidate_3 = run_script(candidate_path_3) if candidate_path_3.exists() else None
     claim_3_runtime = time.monotonic() - claim_3_start
     (generated_3 / "verifier_console.txt").write_text(verifier_3.stdout, encoding="utf-8")
     (generated_3 / "checker_console.txt").write_text(checker_3.stdout, encoding="utf-8")
+    if candidate_3 is not None:
+        (generated_3 / "candidate_verifier_console.txt").write_text(candidate_3.stdout, encoding="utf-8")
     verifier_output_3 = generated_3 / "verifier_output.json"
     if not verifier_output_3.exists():
         print("CLAIM_3_VERIFIER_OUTPUT_MISSING")
@@ -208,7 +212,8 @@ def main() -> int:
         f"- Anscombe delta=0.01 probabilities at n>=10000: "
         f"{[float(row['exceedance_probability']) for row in narrow_3]}; eta={config['claim_3']['eta']}.\n"
         f"- Negative controls: {[value['observed'] for value in result_3['controls'].values()]}.\n"
-        f"- Verifier/checker exits: {verifier_3.returncode}/{checker_3.returncode}.\n"
+        f"- Verifier/checker/candidate exits: {verifier_3.returncode}/{checker_3.returncode}/"
+        f"{candidate_3.returncode if candidate_3 is not None else 'NA'}.\n"
         f"- HF cpu-upgrade runtime: {claim_3_runtime:.3f}s; actual affinity: {env_3['affinity_cpu_count']} CPUs.\n"
     )
     (generated_3 / "EVAL.md").write_text(eval_3, encoding="utf-8")
@@ -220,7 +225,8 @@ def main() -> int:
     candidate_exit_2 = candidate_2.returncode if candidate_2 is not None else None
     passed_1 = verifier_1.returncode == 0 and checker_1.returncode == 0 and candidate_exit_1 in {None, 0}
     passed_2 = verifier_2.returncode == 0 and checker_2.returncode == 0 and candidate_exit_2 in {None, 0}
-    passed_3 = verifier_3.returncode == 0 and checker_3.returncode == 0
+    candidate_exit_3 = candidate_3.returncode if candidate_3 is not None else None
+    passed_3 = verifier_3.returncode == 0 and checker_3.returncode == 0 and candidate_exit_3 in {None, 0}
     summary = {
         "claim_1": {
             "status": verifier_json_1["status"] if passed_1 else "BLOCKED",
@@ -243,6 +249,7 @@ def main() -> int:
             "status": verifier_json_3["status"] if passed_3 else "BLOCKED",
             "verifier_exit": verifier_3.returncode,
             "checker_exit": checker_3.returncode,
+            "candidate_verifier_exit": candidate_exit_3,
             "largest_decomposition": largest_3,
             "narrow_anscombe": narrow_3,
             "controls": result_3["controls"],
@@ -265,6 +272,8 @@ def main() -> int:
     if not passed_3:
         print(verifier_3.stdout)
         print(checker_3.stdout)
+        if candidate_3 is not None:
+            print(candidate_3.stdout)
 
     bundle = make_bundle()
     payload = base64.b64encode(bundle.read_bytes()).decode("ascii")

@@ -8,12 +8,18 @@
     "icml2026-repro",
     "paper-HMyCBL2yMV"
   ],
-  "updated_at": "2026-08-01T19:14:42+00:00",
+  "updated_at": "2026-08-02T12:00:00+00:00",
   "root": {
     "slug": "index",
     "title": "Repro - Beyond First-order Asymptotics in Sequential Mean Testing",
     "file": "pages/index.md",
     "children": [
+      {
+        "slug": "current-claim-3",
+        "title": "Current verification — Claim 3 VERIFIED for declared finite contract",
+        "file": "pages/current-claim-3/page.md",
+        "children": []
+      },
       {
         "slug": "current-claim-2",
         "title": "Current verification — Claim 2 VERIFIED at paper setting",
@@ -58,6 +64,6 @@
       }
     ]
   },
-  "agent_view_tokens": 1375,
-  "revision": "1785576789573033928"
+  "agent_view_tokens": 2580,
+  "revision": "1785662400000000000"
 }

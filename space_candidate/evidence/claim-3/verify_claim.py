@@ -13,21 +13,31 @@ CANDIDATE = HERE.parents[1]
 
 
 def main() -> int:
-    with (HERE / "stopping_clt_metrics.csv").open(newline="", encoding="utf-8") as handle:
-        rows = list(csv.DictReader(handle))
-    growing = sorted((row for row in rows if row["boundary"] == "growing"), key=lambda row: float(row["b"]))
-    largest = growing[-1]
+    with (HERE / "decomposition_metrics.csv").open(newline="", encoding="utf-8") as handle:
+        decomposition = sorted(csv.DictReader(handle), key=lambda row: int(row["n"]))
+    with (HERE / "anscombe_metrics.csv").open(newline="", encoding="utf-8") as handle:
+        anscombe = list(csv.DictReader(handle))
+    largest = decomposition[-1]
+    narrow = [row for row in anscombe if int(row["n"]) >= 10000 and float(row["delta"]) == 0.01]
+    probabilities = {
+        (int(row["n"]), float(row["delta"])): float(row["exceedance_probability"])
+        for row in anscombe
+    }
     checks = {
-        "variance_ci": float(largest["variance_ratio_ci_low"]) <= 1.0 <= float(largest["variance_ratio_ci_high"]),
-        "ks_distance": float(largest["ks_distance"]) <= 0.05,
-        "standardized_mean": abs(float(largest["standardized_mean"])) <= 0.12,
-        "centering_relative_error": abs(float(largest["centering_relative_error"])) <= 0.003,
-        "skewness": abs(float(largest["skewness"])) <= 0.12,
-        "excess_kurtosis": abs(float(largest["excess_kurtosis"])) <= 0.12,
-        "coverage": 0.94 <= float(largest["gaussian_95_coverage"]) <= 0.96,
-        "ks_trend": float(growing[-1]["ks_distance"]) < float(growing[-2]["ks_distance"]) < float(growing[0]["ks_distance"]),
-        "centering_trend": abs(float(growing[-1]["centering_relative_error"])) < abs(float(growing[-2]["centering_relative_error"])) < abs(float(growing[0]["centering_relative_error"])),
-        "variance_trend": abs(float(growing[-1]["variance_ratio"]) - 1.0) < abs(float(growing[0]["variance_ratio"]) - 1.0),
+        "identity": float(largest["max_identity_error"]) <= 2e-12,
+        "dual_remainder": float(largest["t1_rms"]) <= 0.01,
+        "dual_relative": float(largest["t1_to_t2_rms_ratio"]) <= 0.02,
+        "linear_variance": 0.98 <= float(largest["full_to_t2_variance_ratio"]) <= 1.02,
+        "dual_remainder_trend": all(
+            float(left["t1_rms"]) > float(right["t1_rms"])
+            for left, right in zip(decomposition, decomposition[1:])
+        ),
+        "anscombe_narrow_window": all(float(row["wilson_high"]) < 0.1 for row in narrow),
+        "anscombe_nested_windows": all(
+            probabilities[(n, smaller)] <= probabilities[(n, larger)]
+            for n in [500, 2000, 10000, 50000]
+            for smaller, larger in zip([0.01, 0.02, 0.05, 0.1], [0.02, 0.05, 0.1, 0.2], strict=True)
+        ),
     }
     failures = [name for name, passed in checks.items() if not passed]
 
@@ -45,24 +55,18 @@ def main() -> int:
         failures.append("independent checker failed")
 
     logbook = json.loads((CANDIDATE / "logbook.json").read_text(encoding="utf-8"))
-    children = logbook["root"]["children"]
-    current_page = next((child for child in children if child["slug"] == "current-claim-2"), None)
-    if current_page is None:
-        failures.append("current Claim 2 page is absent from navigation")
-        current_page = {"file": "pages/current-claim-2/page.md"}
-    historical_index = min(index for index, child in enumerate(children) if child["slug"] == "overview")
-    claim_index = next((index for index, child in enumerate(children) if child["slug"] == "current-claim-2"), len(children))
-    if claim_index >= historical_index:
-        failures.append("current Claim 2 page appears after historical pages")
-    page = (CANDIDATE / current_page["file"]).read_text(encoding="utf-8")
+    first_page = logbook["root"]["children"][0]
+    if first_page["slug"] != "current-claim-3":
+        failures.append("current Claim 3 page is not first in navigation")
+    page = (CANDIDATE / first_page["file"]).read_text(encoding="utf-8")
     required_text = [
-        "# Claim 2 — VERIFIED at the paper setting",
+        "# Claim 3 — VERIFIED for the declared finite contract",
         "Exact claim contract",
-        "Assumption 4.1",
-        "160,000",
+        "Lemma A.8",
+        "140,000",
         "Current nonzero-exit verifier",
         "Both controls fail",
-        "does not prove the arbitrary-q theorem",
+        "does not prove the universal quantifiers",
     ]
     failures.extend(f"canonical page missing: {text}" for text in required_text if text not in page)
     required_files = [
@@ -70,14 +74,16 @@ def main() -> int:
         "source_audit.md",
         "method.md",
         "limitations.md",
-        "stopping_clt_metrics.csv",
+        "decomposition_metrics.csv",
+        "anscombe_metrics.csv",
         "checker_output.json",
         "negative_controls.json",
         "environment.json",
+        "raw_parts_manifest.json",
     ]
     failures.extend(f"candidate missing: {name}" for name in required_files if not (HERE / name).is_file())
-    if len(list(HERE.glob("stopping_paths-part-*.csv"))) != 8:
-        failures.append("raw path CSV parts missing")
+    if len(list(HERE.glob("claim3-raw-part-*.csv"))) != 7:
+        failures.append("raw Claim 3 CSV parts missing")
 
     protected_root = CANDIDATE / "historical" / "judged-7f2c76f4"
     manifest = CANDIDATE / "evidence" / "protected-judged-revision-manifest.sha256"
@@ -92,16 +98,17 @@ def main() -> int:
             failures.append(f"protected historical hash mismatch: {relative}")
 
     result = {
-        "claim": 2,
+        "claim": 3,
         "status": "VERIFIED" if not failures else "BLOCKED",
         "passed": not failures,
         "failures": failures,
-        "largest_b": largest,
+        "largest_decomposition": largest,
+        "narrow_anscombe": narrow,
         "checks": checks,
         "controls": {name: control["observed"] for name, control in controls.items()},
         "independent_checker_exit": checker.returncode,
         "independent_checker_output": checker.stdout,
-        "canonical_page": current_page["file"],
+        "canonical_page": first_page["file"],
     }
     print(json.dumps(result, indent=2))
     return 0 if result["passed"] else 1
