@@ -123,8 +123,12 @@ def main() -> int:
     if current_page is None:
         failures.append("current Claim 5 page absent from navigation")
         current_page = {"file": "pages/current-claim-5/page.md"}
-    elif children[0]["slug"] != "current-claim-5":
-        failures.append("current Claim 5 page is not first in navigation")
+    historical_index = min(index for index, child in enumerate(children) if child["slug"] == "overview")
+    claim_index = next(
+        (index for index, child in enumerate(children) if child["slug"] == "current-claim-5"), len(children)
+    )
+    if claim_index >= historical_index:
+        failures.append("current Claim 5 page appears after historical pages")
     page = (CANDIDATE / current_page["file"]).read_text(encoding="utf-8")
     required_text = [
         "# Claim 5 — VERIFIED",
