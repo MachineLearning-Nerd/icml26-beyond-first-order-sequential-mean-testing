@@ -201,6 +201,7 @@ def simulate_bootstrap(
     tau = np.zeros((replicates, len(alphas)), dtype=np.int32)
     evidence_at_stop = np.zeros((replicates, len(alphas)))
     evidence_before_stop = np.zeros((replicates, len(alphas)))
+    last_draw_at_stop = np.zeros((replicates, len(alphas)), dtype=np.int32)
     counts_at_stop: list[list[list[int] | None]] = [[None] * len(alphas) for _ in range(replicates)]
     previous_evidence = np.zeros(replicates)
     row_ids = np.arange(replicates)
@@ -215,6 +216,7 @@ def simulate_bootstrap(
                 tau[path, alpha_index] = n
                 evidence_at_stop[path, alpha_index] = evidence[path]
                 evidence_before_stop[path, alpha_index] = previous_evidence[path]
+                last_draw_at_stop[path, alpha_index] = draws[path]
                 counts_at_stop[path][alpha_index] = counts[path].tolist()
         if np.all(tau > 0):
             rows = []
@@ -227,7 +229,7 @@ def simulate_bootstrap(
                             "alpha": alpha,
                             "b": float(thresholds[alpha_index]),
                             "tau": int(tau[path, alpha_index]),
-                            "last_draw": int(draws[path]),
+                            "last_draw": int(last_draw_at_stop[path, alpha_index]),
                             "evidence_previous": float(evidence_before_stop[path, alpha_index]),
                             "evidence_at_stop": float(evidence_at_stop[path, alpha_index]),
                             "counts": counts_at_stop[path][alpha_index],
