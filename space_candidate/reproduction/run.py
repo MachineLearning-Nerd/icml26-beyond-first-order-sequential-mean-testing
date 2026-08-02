@@ -58,6 +58,24 @@ def main() -> int:
         }
         passed = passed and verifier.returncode == 0
 
+    notebook = subprocess.run(
+        [sys.executable, "-m", "marimo", "check", "notebooks/sequential_mean_testing.py"],
+        cwd=ROOT,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        check=False,
+    )
+    release_gate = subprocess.run(
+        [sys.executable, (ROOT / "evidence/release/verify_release.py").as_posix()],
+        cwd=ROOT,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        check=False,
+    )
+    passed = passed and notebook.returncode == 0 and release_gate.returncode == 0
+
     summary = {
         "status": "VERIFIED" if passed else "BLOCKED",
         "fixed_command": "uv sync --frozen && .venv/bin/python -m reproduction.run",
@@ -68,6 +86,8 @@ def main() -> int:
         "cpu_count": os.cpu_count(),
         "runtime_seconds": time.monotonic() - start,
         "claims": results,
+        "marimo_check": {"exit": notebook.returncode, "output": notebook.stdout},
+        "release_gate": {"exit": release_gate.returncode, "output": release_gate.stdout},
     }
     print("CANDIDATE_SUMMARY=" + json.dumps(summary, sort_keys=True))
     return 0 if passed else 1

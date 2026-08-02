@@ -15,6 +15,12 @@
     "file": "pages/index.md",
     "children": [
       {
+        "slug": "release-report",
+        "title": "Current release report and visibility matrix",
+        "file": "pages/release-report/page.md",
+        "children": []
+      },
+      {
         "slug": "current-claim-5",
         "title": "Current verification — Claim 5 VERIFIED for declared Section 5 contract",
         "file": "pages/current-claim-5/page.md",
@@ -76,6 +82,6 @@
       }
     ]
   },
-  "agent_view_tokens": 3400,
+  "agent_view_tokens": 6800,
   "revision": "1785682800000000000"
 }
