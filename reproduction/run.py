@@ -17,6 +17,7 @@ from .claim2 import run_claim as run_claim_2
 from .claim3 import run_claim as run_claim_3
 from .claim4 import run_claim as run_claim_4
 from .claim5 import run_claim as run_claim_5
+from .reporting import generate_figures
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -26,6 +27,7 @@ CLAIM_2 = ARTIFACTS / "claim_2"
 CLAIM_3 = ARTIFACTS / "claim_3"
 CLAIM_4 = ARTIFACTS / "claim_4"
 CLAIM_5 = ARTIFACTS / "claim_5"
+RELEASE = ARTIFACTS / "release"
 
 
 def sha256(path: Path) -> str:
@@ -54,7 +56,7 @@ def write_manifest(claim_dir: Path) -> None:
 def make_bundle() -> Path:
     bundle = ARTIFACTS / "cumulative_evidence_bundle.zip"
     with zipfile.ZipFile(bundle, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
-        for claim_dir in (CLAIM_1, CLAIM_2, CLAIM_3, CLAIM_4, CLAIM_5):
+        for claim_dir in (CLAIM_1, CLAIM_2, CLAIM_3, CLAIM_4, CLAIM_5, RELEASE):
             for path in sorted(claim_dir.rglob("*")):
                 if not path.is_file() or "__pycache__" in path.parts:
                     continue
@@ -307,6 +309,17 @@ def main() -> int:
         f"fully disclosed official public same-domain pool.\n"
     )
     (generated_5 / "EVAL.md").write_text(eval_5, encoding="utf-8")
+    figures = generate_figures(ROOT / "space_candidate", RELEASE / "generated" / "images")
+    candidate_run = subprocess.run(
+        [sys.executable, "-m", "reproduction.run"],
+        cwd=ROOT / "space_candidate",
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        check=False,
+    )
+    RELEASE.mkdir(parents=True, exist_ok=True)
+    (RELEASE / "candidate_console.txt").write_text(candidate_run.stdout, encoding="utf-8")
     write_manifest(CLAIM_1)
     write_manifest(CLAIM_2)
     write_manifest(CLAIM_3)
@@ -373,6 +386,8 @@ def main() -> int:
             "runtime_seconds": claim_5_runtime,
         },
         "actual_affinity_cpus": env_2["affinity_cpu_count"],
+        "candidate_fixed_command_exit": candidate_run.returncode,
+        "release_figures": [path.name for path in figures],
         "total_runtime_seconds": time.monotonic() - total_start,
     }
     print("EVAL_SUMMARY=" + json.dumps(summary, sort_keys=True))
@@ -401,6 +416,9 @@ def main() -> int:
         print(checker_5.stdout)
         if candidate_5 is not None:
             print(candidate_5.stdout)
+    if candidate_run.returncode != 0:
+        print("CANDIDATE_FIXED_COMMAND_FAILED")
+        print(candidate_run.stdout)
 
     bundle = make_bundle()
     payload = base64.b64encode(bundle.read_bytes()).decode("ascii")
@@ -409,7 +427,7 @@ def main() -> int:
         print(payload[start_index : start_index + 76])
     print("ARTIFACT_BUNDLE_END")
     print("FINAL_SUMMARY=" + json.dumps(summary, sort_keys=True))
-    return 0 if passed_1 and passed_2 and passed_3 and passed_4 and passed_5 else 1
+    return 0 if passed_1 and passed_2 and passed_3 and passed_4 and passed_5 and candidate_run.returncode == 0 else 1
 
 
 if __name__ == "__main__":
