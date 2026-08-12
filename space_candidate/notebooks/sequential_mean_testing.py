@@ -120,7 +120,7 @@ Formal command, always on Hugging Face `cpu-upgrade`:
 uv sync --frozen && .venv/bin/python -m reproduction.run
 ```
 
-Start at the [canonical release page](https://huggingface.co/spaces/DineshAI/HMyCBL2yMV/#/release-report), then follow each claim's contract, source audit, implementation, raw CSV/JSON, independent checker, negative control, and environment record. The GitHub [visual report](https://github.com/MachineLearning-Nerd/icml26-repro-HMyCBL2yMV-beyond-first-order-asymptotics-in-sequential-mean-testing/blob/main/reports/sequential-mean-testing/report.md) explains the implementation and lineage.
+Start at the [canonical release page](https://huggingface.co/spaces/DineshAI/HMyCBL2yMV/#/release-report), then follow each claim's contract, source audit, implementation, raw CSV/JSON, independent checker, negative control, and environment record. The GitHub [visual report](https://github.com/MachineLearning-Nerd/icml26-beyond-first-order-sequential-mean-testing/blob/main/reports/sequential-mean-testing/report.md) explains the implementation and lineage.
 
 The previous live score remains **3/10** until the evaluator judges the new Hugging Face revision. The conservative forecast is **6–10**; `10/10` is a best-supported possible forecast, not an earned result.
 """

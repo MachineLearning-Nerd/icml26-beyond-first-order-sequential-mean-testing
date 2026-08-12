@@ -1,6 +1,6 @@
 # Evaluator-blind red team — round 1
 
-Candidate Git revision: `470cbd5513750b246ed4d787380068694f576567`. Fresh clone: `orx/final-publication-gates`. The reviewer started at `README.md`, received no storage hints, and used only the candidate plus the release rubric.
+Candidate Git revision: `470cbd5513750b246ed4d787380068694f576567`. Fresh clone: `release/publication-gates`. The reviewer started at `README.md`, received no storage hints, and used only the candidate plus the release rubric.
 
 ## Findings
 

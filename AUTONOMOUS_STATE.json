@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "paper": "Beyond First-order Asymptotics in Sequential Mean Testing",
+  "arxiv": "2606.04520v1",
+  "authors": ["Vikas Deep", "Shubhada Agrawal"],
+  "phase": "claim_audit_and_release_surface_complete",
+  "next_action": "publish_clean_branch_names_then_verify_live_repository",
+  "claim_status": {
+    "1": "verified_finite_contract",
+    "2": "verified_finite_contract",
+    "3": "verified_finite_contract",
+    "4": "falsified_literal_actual_proposition_supported",
+    "5": "verified_declared_finite_contract"
+  },
+  "former_branch_count": 16,
+  "target_branch_count": 16,
+  "publication_allowed": true,
+  "github_repository": "https://github.com/MachineLearning-Nerd/icml26-beyond-first-order-sequential-mean-testing",
+  "compute_policy": "Hugging Face cpu-upgrade with pinned CPU-only image; no GPU",
+  "dssat_substitution": {
+    "repository": "https://github.com/DSSAT/dssat-csm-data",
+    "commit": "a4f95d3ef36f1358bdeb5db49d498d5db373ba7a",
+    "scope": "public same-domain pool; not exact author Figure 5 data"
+  },
+  "documentation": {
+    "readme": "complete",
+    "branch_audit": "complete",
+    "status": "complete",
+    "citation_and_thank_you": "complete",
+    "repository_rename": "pending_publication_verification"
+  }
+}
