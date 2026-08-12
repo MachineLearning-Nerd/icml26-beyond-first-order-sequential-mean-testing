@@ -3,8 +3,8 @@
   "paper": "Beyond First-order Asymptotics in Sequential Mean Testing",
   "arxiv": "2606.04520v1",
   "authors": ["Vikas Deep", "Shubhada Agrawal"],
-  "phase": "claim_audit_and_release_surface_complete",
-  "next_action": "publish_clean_branch_names_then_verify_live_repository",
+  "phase": "published_and_live_verified",
+  "next_action": "continue_collection_with_next_repository",
   "claim_status": {
     "1": "verified_finite_contract",
     "2": "verified_finite_contract",
@@ -27,6 +27,16 @@
     "branch_audit": "complete",
     "status": "complete",
     "citation_and_thank_you": "complete",
-    "repository_rename": "pending_publication_verification"
+    "repository_rename": "complete"
+  },
+  "live_verification": {
+    "repository_name": "icml26-beyond-first-order-sequential-mean-testing",
+    "default_branch": "main",
+    "branch_count": 17,
+    "descriptive_branch_count": 16,
+    "old_orx_branches_present": false,
+    "reachable_commit_identity": "MachineLearning-Nerd <37579156+MachineLearning-Nerd@users.noreply.github.com>",
+    "main_commit_before_checkpoint": "f6c1d87d47455ca400bd205703c0949af23ee521",
+    "readme_blob": "4f547163ba899a4e227079e779cd0752f812c2c9"
   }
 }
