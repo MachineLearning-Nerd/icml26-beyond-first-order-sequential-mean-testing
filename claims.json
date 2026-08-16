@@ -1,0 +1,65 @@
+{
+  "schema_version": 2,
+  "paper": {
+    "title": "Beyond First-order Asymptotics in Sequential Mean Testing",
+    "authors": [
+      "Vikas Deep",
+      "Shubhada Agrawal"
+    ],
+    "arxiv": "2606.04520v1",
+    "openreview": "HMyCBL2yMV"
+  },
+  "repository": {
+    "name": "icml26-beyond-first-order-sequential-mean-testing",
+    "owner": "MachineLearning-Nerd",
+    "default_branch": "main"
+  },
+  "claims": [
+    {
+      "id": 1,
+      "paper_target": "Theorem 4.2 fixed-sample KL_inf CLT",
+      "status": "VERIFIED_FINITE_CONTRACT",
+      "implementation": "reproduction/claim1.py",
+      "evidence_dir": "space_candidate/evidence/claim-1",
+      "checker": "space_candidate/evidence/claim-1/checker_output.json",
+      "control": "space_candidate/evidence/claim-1/negative_control.json"
+    },
+    {
+      "id": 2,
+      "paper_target": "Theorem 4.4 stopping-time CLT",
+      "status": "VERIFIED_FINITE_CONTRACT",
+      "implementation": "reproduction/claim2.py",
+      "evidence_dir": "space_candidate/evidence/claim-2",
+      "checker": "space_candidate/evidence/claim-2/checker_output.json",
+      "control": "space_candidate/evidence/claim-2/negative_controls.json"
+    },
+    {
+      "id": 3,
+      "paper_target": "Equations (5)-(6) and Lemma A.8",
+      "status": "VERIFIED_FINITE_FULL_PREFIX_CONTRACT",
+      "implementation": "reproduction/claim3.py",
+      "evidence_dir": "space_candidate/evidence/claim-3",
+      "checker": "space_candidate/evidence/claim-3/checker_output.json",
+      "control": "space_candidate/evidence/claim-3/negative_controls.json"
+    },
+    {
+      "id": 4,
+      "paper_target": "Proposition 4.5 single-run confidence interval",
+      "status": "FALSIFIED_LITERAL_FORMULA_SUPPORTED",
+      "implementation": "reproduction/claim4.py",
+      "evidence_dir": "space_candidate/evidence/claim-4",
+      "checker": "space_candidate/evidence/claim-4/checker_output.json",
+      "control": "space_candidate/evidence/claim-4/negative_controls.json"
+    },
+    {
+      "id": 5,
+      "paper_target": "Section 5 synthetic and crop-yield agreement",
+      "status": "VERIFIED_DECLARED_PUBLIC_DATA_CONTRACT",
+      "implementation": "reproduction/claim5.py",
+      "evidence_dir": "space_candidate/evidence/claim-5",
+      "checker": "space_candidate/evidence/claim-5/checker_output.json",
+      "control": "space_candidate/evidence/claim-5/negative_controls.json"
+    }
+  ],
+  "scope_note": "Finite evidence does not replace the paper’s universal asymptotic proofs. Claim 5 uses a disclosed public-data substitution because the exact author pool is unavailable."
+}

@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If this reproduction and audit is useful, please cite the paper and this repository."
+title: "Beyond First-order Asymptotics in Sequential Mean Testing - reproduction and claim audit"
+type: software
+version: "2026.08"
+date-released: 2026-08-17
+authors:
+  - family-names: Deep
+    given-names: Vikas
+  - family-names: Agrawal
+    given-names: Shubhada
+repository-code: "https://github.com/MachineLearning-Nerd/icml26-beyond-first-order-sequential-mean-testing"
+url: "https://arxiv.org/abs/2606.04520"
+identifiers:
+  - type: doi
+    value: "10.48550/arXiv.2606.04520"
+    description: "arXiv identifier for the paper"
+keywords:
+  - sequential mean testing
+  - KL_inf
+  - asymptotic statistics
+  - reproduction audit

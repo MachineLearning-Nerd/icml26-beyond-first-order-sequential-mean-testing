@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "purpose": "Content manifest for the repository-level audit dossier and its decisive release evidence.",
+  "repository": "MachineLearning-Nerd/icml26-beyond-first-order-sequential-mean-testing",
+  "paper": "arXiv:2606.04520v1",
+  "branch_contract": {
+    "default": "main",
+    "total": 17,
+    "descriptive": 16,
+    "old_prefix_absent": "orx/"
+  },
+  "aggregate_manifests": {
+    "space_candidate/evidence/release/publication_manifest.sha256": "610aaa9e3340cca9e5e231ecbc7ad960310c02a0fea8cffcff881022c3588911",
+    "space_candidate/evidence/protected-judged-revision-manifest.sha256": "4fefaf106c0bc9eb1659c24b30e2695dd1cb90c8cee9244ac8258c7e41cbdb9f"
+  },
+  "files": {
+    "README.md": "79e46f8b2de37b79af4b81aea828562dd9c9023702156a8216de5ebdbfffbf52",
+    "STATUS.md": "baca7c8877af864bbad131e0aeed29cd419ad94a24559243324254f1eee714c5",
+    "branch-audit.md": "c218fe5cf9690a5d1e22cd53be1c166070f18e8f19d24b4bbdafcf0d73aed2ea",
+    "BRANCH_AUDIT.md": "8e4df258b377caecfd3258c2f458c530ed26121adaaef119ee797d2352b05971",
+    "AUTHOR_THANK_YOU.md": "c57bc7f9749f08d1aa1737bb07cc4552a9a3c8d3167cc30d525a0fab9a5e0eec",
+    "CITATION.cff": "751d259fc4c52aa9dd6ed5a34d4aaed5dd8c2053a19132b4ee1e3dd9a5d9f05a",
+    "CLAIM_EVIDENCE.md": "db202fd0c82ff72fa2ccfe6d9657b6f47b38d69b6c382587613190a6ab9f995c",
+    "ENVIRONMENT.md": "f9b59d6dd8834acb25da13bae688e58abd338978bb1661ad8428475237aac641",
+    "REPORT.md": "3e835c77c33bf8be10dd64c7f284cd9a0e8f50e1c71eb256f121a0ca1bca7388",
+    "SOURCE_AUDIT.md": "b3d28ec62c97e1f75334e27ea8e65367168d970af9f3c6ff0c8f9eaade2c787f",
+    "claims.json": "52512916842f1711554ee7c0a7f27d3b5a7035bd6abb74e62a1698f3b0171f82",
+    "verify_final.py": "fc1e0701591cff0f7185b8cb677c747d5ae830c35c23243574ac4575400df654",
+    "space_candidate/evidence/release/publication_allowlist.txt": "a8e169e81ef1a56454caa0da9550e6d4db36aec911f7d3aeea1ba1e5a548eac0",
+    "space_candidate/evidence/release/verify_release.py": "568005c3be042a4e88dba3bd1fd0be5648ab3abc72ca87104e0b43a17e0fc629",
+    "space_candidate/evidence/release/visibility_matrix.md": "38c6dd320830a281b295cff09ea4002ed3431942116c9a4f4d16b633750423c0",
+    "space_candidate/evidence/release/red-team-round-1.md": "df8e774ea7246a2bff1c6d5419b19926679da6b842770314b968339a8c00188d",
+    "space_candidate/evidence/release/red-team-round-2.md": "e5a057dddd93c813dcc0cbf5f8bc008dcc504f4b6e8bea2a3c330f90471115ac",
+    "space_candidate/evidence/release/command_ledger.md": "6b921dfe04684073c35d2d56dd12e3d1455292515c9dc2a77de0de28bb5bf991",
+    "space_candidate/evidence/protected-judged-revision-manifest.sha256": "4fefaf106c0bc9eb1659c24b30e2695dd1cb90c8cee9244ac8258c7e41cbdb9f",
+    "space_candidate/pages/release-report/page.md": "b98800d4d7db328e9511a064ef26bd19e22d33b115af41a13d6bd676e2fcca46",
+    "space_candidate/logbook.json": "0f6b794b74d4f9fb87557773e2fb3d475e50e98817b8d54648016ea2851dc575",
+    "reproduction/config.json": "69a89078e18883b3501289c0846d3b60c30a6744b9bea6928d715872f0df62ab",
+    "pyproject.toml": "e5c44b20f0157f70a1b2bd917fb9e3fe83db110d1a6bc25f66a676ec02736dd5",
+    "uv.lock": "47ec0ee7edd306ee9122abfe2355199e1243a2919f5a2b02abcf04a46e0770df"
+  }
+}

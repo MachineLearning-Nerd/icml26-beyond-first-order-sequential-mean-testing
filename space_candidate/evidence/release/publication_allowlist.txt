@@ -123,7 +123,6 @@ evidence/claim-5/verify_claim.py
 evidence/protected-judged-revision-manifest.sha256
 evidence/release/command_ledger.md
 evidence/release/publication_allowlist.txt
-evidence/release/publication_manifest.sha256
 evidence/release/red-team-round-1.md
 evidence/release/red-team-round-2.md
 evidence/release/verify_release.py

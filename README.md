@@ -22,6 +22,19 @@ The evidence is strong but scoped. Claims 1–3 and 5 are **verified under expli
 
 The previous live evaluator score remains `3/10`; the `6–10` and `10/10` numbers in the reports are forecasts, not judge results.
 
+## Audit dossier
+
+The repository-level audit is captured in the following files:
+
+- [REPORT.md](REPORT.md) gives the concise decision and claim outcomes.
+- [CLAIM_EVIDENCE.md](CLAIM_EVIDENCE.md) maps every claim to its implementation, checker, control, and limitation.
+- [SOURCE_AUDIT.md](SOURCE_AUDIT.md) records paper identity, source hash, theorem anchors, and the disclosed DSSAT substitution.
+- [BRANCH_AUDIT.md](BRANCH_AUDIT.md) records the final branch names, former checkpoint names, repository rename, and attribution policy.
+- [CITATION.cff](CITATION.cff) and [AUTHOR_THANK_YOU.md](AUTHOR_THANK_YOU.md) provide citation metadata and an explicit thank-you note.
+- [EVIDENCE_MANIFEST.json](EVIDENCE_MANIFEST.json) and [verify_final.py](verify_final.py) provide the content and state verification contract.
+
+Run PYTHONDONTWRITEBYTECODE=1 python3 verify_final.py from the repository root for the lightweight final audit. It rechecks the existing evidence and release gate; it does not rerun the full scientific experiments.
+
 ## What the paper does
 
 The paper studies nonparametric sequential testing of a bounded distribution’s mean. For observations in `[0,1]`, it considers an `alpha`-correct power-one test of `H0: mean = m0` versus `H1: mean != m0`, using the information quantity `KL_inf` and the first crossing of a growing boundary.

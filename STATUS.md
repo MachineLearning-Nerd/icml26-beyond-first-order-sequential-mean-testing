@@ -8,3 +8,5 @@ GitHub repository: https://github.com/MachineLearning-Nerd/icml26-beyond-first-o
 Branch state: main plus 16 descriptive audit/release checkpoints; old orx names removed
 Historical state: judged baseline 7f2c76f4 preserved under historical/judged-7f2c76f4/
 Publication state: renamed, branch-cleaned, attribution-normalized, pushed, and verified against the live GitHub API
+Audit dossier: complete; paper source, claim ledger, branch map, citation, thank-you note, evidence manifest, and final verifier are present
+Final audit boundary: Claims 1-3 and 5 are finite-contract results; Claim 4 is literally falsified while its deterministic-target formula is supported; no universal theorem or new judge score is claimed
