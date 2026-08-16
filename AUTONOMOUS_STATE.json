@@ -1,10 +1,10 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "paper": "Beyond First-order Asymptotics in Sequential Mean Testing",
   "arxiv": "2606.04520v1",
   "authors": ["Vikas Deep", "Shubhada Agrawal"],
-  "phase": "published_and_live_verified",
-  "next_action": "continue_collection_with_next_repository",
+  "phase": "dossier_published_finite_contracts",
+  "next_action": "update_collection_trackers_then_continue",
   "claim_status": {
     "1": "verified_finite_contract",
     "2": "verified_finite_contract",
@@ -27,6 +27,12 @@
     "branch_audit": "complete",
     "status": "complete",
     "citation_and_thank_you": "complete",
+    "claim_evidence": "complete",
+    "source_audit": "complete",
+    "environment": "complete",
+    "report": "complete",
+    "evidence_manifest": "complete",
+    "final_verifier": "complete",
     "repository_rename": "complete"
   },
   "live_verification": {
@@ -36,7 +42,13 @@
     "descriptive_branch_count": 16,
     "old_orx_branches_present": false,
     "reachable_commit_identity": "MachineLearning-Nerd <37579156+MachineLearning-Nerd@users.noreply.github.com>",
-    "main_commit_before_checkpoint": "f6c1d87d47455ca400bd205703c0949af23ee521",
-    "readme_blob": "4f547163ba899a4e227079e779cd0752f812c2c9"
+    "main_commit_before_dossier": "62b4b4842a5569eaa1ca1be82ffd2132702846cf",
+    "dossier_commit": "6beaf8d734baad28ef875d9dfea300fbf8d168f8",
+    "fresh_clone_verifier": "FINAL_AUDIT=VERIFIED branches=17 commits=29",
+    "readme_blob": "4edf1a8e700d4bd2d1178e1fa12b266486839d00",
+    "metadata": {
+      "description": "ICML 2026 scoped reproduction audit for Beyond First-order Sequential Mean Testing",
+      "homepage": "https://arxiv.org/abs/2606.04520"
+    }
   }
 }
