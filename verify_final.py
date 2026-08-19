@@ -94,6 +94,8 @@ def main() -> int:
         "REPORT.md",
         "SOURCE_AUDIT.md",
         "claims.json",
+        "reproduction_verdicts.json",
+        "AUTONOMOUS_STATE.json",
         "EVIDENCE_MANIFEST.json",
         "verify_final.py",
         "space_candidate/evidence/release/publication_allowlist.txt",
@@ -141,6 +143,25 @@ def main() -> int:
             "5": "VERIFIED_DECLARED_PUBLIC_DATA_CONTRACT",
         },
         "claim status ledger",
+    )
+
+    verdicts = json.loads((ROOT / "reproduction_verdicts.json").read_text(encoding="utf-8"))
+    check(
+        verdicts.get("repository") == REPOSITORY
+        and verdicts.get("overall_verdict") == "PARTIAL_FINITE_CONTRACTS_CLAIM_4_LITERAL_FALSIFIED"
+        and verdicts.get("publication_allowed") is False,
+        "reproduction verdict header",
+    )
+    verdict_statuses = {str(claim["id"]): claim["status"] for claim in verdicts["claims"]}
+    check(verdict_statuses == statuses, "reproduction verdict status ledger")
+
+    state = json.loads((ROOT / "AUTONOMOUS_STATE.json").read_text(encoding="utf-8"))
+    check(
+        state.get("phase") == "published_and_verified"
+        and state.get("overall_verdict") == "PARTIAL_FINITE_CONTRACTS_CLAIM_4_LITERAL_FALSIFIED"
+        and state.get("publication_allowed") is False
+        and state.get("live_verification", {}).get("default_branch") == "main",
+        "autonomous state",
     )
 
     claim1 = json.loads((ROOT / "space_candidate/evidence/claim-1/checker_output.json").read_text())

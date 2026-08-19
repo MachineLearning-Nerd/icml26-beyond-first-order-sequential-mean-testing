@@ -31,6 +31,7 @@ The repository-level audit is captured in the following files:
 - [SOURCE_AUDIT.md](SOURCE_AUDIT.md) records paper identity, source hash, theorem anchors, and the disclosed DSSAT substitution.
 - [BRANCH_AUDIT.md](BRANCH_AUDIT.md) records the final branch names, former checkpoint names, repository rename, and attribution policy.
 - [CITATION.cff](CITATION.cff) and [AUTHOR_THANK_YOU.md](AUTHOR_THANK_YOU.md) provide citation metadata and an explicit thank-you note.
+- [reproduction_verdicts.json](reproduction_verdicts.json) and [AUTONOMOUS_STATE.json](AUTONOMOUS_STATE.json) provide machine-readable claim outcomes and publication state.
 - [EVIDENCE_MANIFEST.json](EVIDENCE_MANIFEST.json) and [verify_final.py](verify_final.py) provide the content and state verification contract.
 
 Run PYTHONDONTWRITEBYTECODE=1 python3 verify_final.py from the repository root for the lightweight final audit. It rechecks the existing evidence and release gate; it does not rerun the full scientific experiments.

@@ -14,7 +14,7 @@
     "space_candidate/evidence/protected-judged-revision-manifest.sha256": "4fefaf106c0bc9eb1659c24b30e2695dd1cb90c8cee9244ac8258c7e41cbdb9f"
   },
   "files": {
-    "README.md": "79e46f8b2de37b79af4b81aea828562dd9c9023702156a8216de5ebdbfffbf52",
+    "README.md": "537c2d0da6828cceea249d7ff3aa3cea022eb508ac5b7f9288f4dc29e45491f0",
     "STATUS.md": "baca7c8877af864bbad131e0aeed29cd419ad94a24559243324254f1eee714c5",
     "branch-audit.md": "c218fe5cf9690a5d1e22cd53be1c166070f18e8f19d24b4bbdafcf0d73aed2ea",
     "BRANCH_AUDIT.md": "8e4df258b377caecfd3258c2f458c530ed26121adaaef119ee797d2352b05971",
@@ -25,7 +25,8 @@
     "REPORT.md": "3e835c77c33bf8be10dd64c7f284cd9a0e8f50e1c71eb256f121a0ca1bca7388",
     "SOURCE_AUDIT.md": "b3d28ec62c97e1f75334e27ea8e65367168d970af9f3c6ff0c8f9eaade2c787f",
     "claims.json": "52512916842f1711554ee7c0a7f27d3b5a7035bd6abb74e62a1698f3b0171f82",
-    "verify_final.py": "fc1e0701591cff0f7185b8cb677c747d5ae830c35c23243574ac4575400df654",
+    "reproduction_verdicts.json": "2457f12266be5b5856112a5c107b75d9a12057e0abc2935a06c0cd553c4065b9",
+    "verify_final.py": "1309b6e3d5c0b7080fb48be7ff2e741b95921979a1524b10a498865f75aa872f",
     "space_candidate/evidence/release/publication_allowlist.txt": "a8e169e81ef1a56454caa0da9550e6d4db36aec911f7d3aeea1ba1e5a548eac0",
     "space_candidate/evidence/release/verify_release.py": "568005c3be042a4e88dba3bd1fd0be5648ab3abc72ca87104e0b43a17e0fc629",
     "space_candidate/evidence/release/visibility_matrix.md": "38c6dd320830a281b295cff09ea4002ed3431942116c9a4f4d16b633750423c0",

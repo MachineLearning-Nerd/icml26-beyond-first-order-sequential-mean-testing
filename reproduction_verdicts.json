@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "repository": "MachineLearning-Nerd/icml26-beyond-first-order-sequential-mean-testing",
+  "paper": {
+    "title": "Beyond First-order Asymptotics in Sequential Mean Testing",
+    "arxiv": "2606.04520v1",
+    "openreview": "HMyCBL2yMV"
+  },
+  "overall_verdict": "PARTIAL_FINITE_CONTRACTS_CLAIM_4_LITERAL_FALSIFIED",
+  "publication_allowed": false,
+  "claims": [
+    {"id": 1, "status": "VERIFIED_FINITE_CONTRACT", "scope": "Fixed-sample KL_inf CLT at the declared finite settings with independent replay and negative control."},
+    {"id": 2, "status": "VERIFIED_FINITE_CONTRACT", "scope": "Stopping-time CLT at the declared finite boundary and path count."},
+    {"id": 3, "status": "VERIFIED_FINITE_FULL_PREFIX_CONTRACT", "scope": "Exact decomposition, optimizer remainder, full-prefix windows, and Anscombe finite audit."},
+    {"id": 4, "status": "FALSIFIED_LITERAL_FORMULA_SUPPORTED", "scope": "Literal interval target is falsified; the displayed deterministic-target formula is supported for the tested Bernoulli law."},
+    {"id": 5, "status": "VERIFIED_DECLARED_PUBLIC_DATA_CONTRACT", "scope": "Synthetic and pinned public DSSAT-pool checks; exact author crop-yield data is unavailable."}
+  ],
+  "limitations": [
+    "Finite evidence does not replace the paper's universal asymptotic proofs.",
+    "Claim 5 uses a disclosed public-data substitution rather than the exact author pool.",
+    "No new live evaluator score is claimed; the previous 3/10 score and projected scores remain historical/forecast records."
+  ]
+}
