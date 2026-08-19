@@ -5,6 +5,8 @@
   "authors": ["Vikas Deep", "Shubhada Agrawal"],
   "phase": "published_and_verified",
   "next_action": "select_next_icml_repository",
+  "last_checkpoint": "2026-08-19T13:17:50+05:30",
+  "last_known_git_commit": "1daf85e5b45b8e89858340b2b37d1fef1833223e",
   "claim_status": {
     "1": "verified_finite_contract",
     "2": "verified_finite_contract",
